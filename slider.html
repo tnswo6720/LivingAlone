@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    .slider {
+  position: relative;
+  width: 100%;
+}
+
+.slider-container {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.slider-container img {
+  width: 50%;
+}
+
+.slider-prev,
+.slider-next {
+  position: absolute;
+  top: 10%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.slider-prev {
+  left: 20px;
+}
+
+.slider-next {
+  right: 20px;
+}
+
+        img {
+            height: 300px;
+            width: 500px;
+        }      
+    
+    
+    </style>
+</head>
+<body>
+   <div class="slider">
+  <div class="slider-container">
+    <img src="./images/back.jpg">
+    <img src="./images/bt.gif">
+    <img src="./images/life.jpg">
+    <img src="./images/summer.jpg">
+  </div>
+  <button class="slider-prev">&#10094;</button>
+  <button class="slider-next">&#10095;</button>
+</div>
+
+
+<!-- JavaScript 코드 -->
+<script>
+const slider = document.querySelector('.slider');
+const sliderContainer = slider.querySelector('.slider-container');
+const sliderPrev = slider.querySelector('.slider-prev');
+const sliderNext = slider.querySelector('.slider-next');
+const sliderImgs = sliderContainer.querySelectorAll('img');
+const sliderImgWidth = sliderImgs[0].clientWidth;
+let currentPosition = 0;
+
+sliderPrev.addEventListener('click', () => {
+  currentPosition += sliderImgWidth;
+  if (currentPosition > 0) {
+    currentPosition = -(sliderImgs.length - 1) * sliderImgWidth;
+  }
+  sliderContainer.style.transform = `translateX(${currentPosition}px)`;
+});
+
+sliderNext.addEventListener('click', () => {
+  currentPosition -= sliderImgWidth;
+  if (currentPosition < -(sliderImgs.length - 1) * sliderImgWidth) {
+    currentPosition = 0;
+  }
+  sliderContainer.style.transform = `translateX(${currentPosition}px)`;
+});
+
+</script>
+</body>
+</html>

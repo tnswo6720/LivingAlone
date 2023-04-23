@@ -1,0 +1,63 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+h1 {
+  color: #FFC0CB;
+  text-shadow: 2px 2px 4px #FF1493;
+  font-size: 35px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+body {
+  margin: 0;
+  background-image: url("images/back.jpg");
+  background-size: cover;
+}
+
+.login-form {
+  width: 300px;
+  border: 0;
+  border-radius: 10px;
+  background-color: #EEEFF1;
+  padding: 30px;
+  margin: 0 auto;
+}
+
+.text-field {
+  font-size: 14px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.submit-btn {
+  color: #EEEFF1;
+  font-size: 14px;
+  background-color: pink;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+}
+
+.links {
+    
+  
+/*
+  display: flex;
+  justify-content: center;
+*/
+}
+
+.links a {
+  font-size: 12px;
+  color: #FFC0CB;
+  margin: 0 5px;
+  text-decoration: none; 
+    
+}
