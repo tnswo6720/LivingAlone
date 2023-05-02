@@ -1,0 +1,120 @@
+/* 전체 페이지 스타일 */
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    
+    font-family: sans-serif;
+    margin: 0;
+  }
+  
+  
+  /* 헤더 스타일 */
+  header {
+    background-color: pink;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+  }
+  
+  header h1 {/*헤더 부분에 위치한 h1 요소의 스타일을 설정*/
+    margin: 0;
+    font-size: 10px;
+    text-align: left;
+  }
+  
+  header nav ul {/* 헤더 부분에 위치한 nav 요소의 스타일을 설정*/
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  
+  header nav ul li {/*nav 요소 내부에 위치한 li 요소의 스타일을 설정*/
+    margin: 0 10px;
+  }
+  
+  header nav ul li a {/*nav 요소 내부에 위치한 a 요소의 스타일을 설정*/
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  /* 메인 내용 스타일 */
+  main {
+    padding: 10px;
+    
+    
+  }
+  
+ 
+ 
+    
+   
+  .container {
+    height: 50%; /* 높이를 줄입니다. */
+  }
+  
+  .container * {
+    height: 80%; /* 내부 요소들의 높이를 줄입니다. */
+  }
+    
+  
+   
+.container *:before {
+    content: "";
+    display: block;
+    padding-top: 100%; /* 내부 요소들의 비율을 유지합니다. */
+  } 
+    
+  
+.products {
+    display: grid;
+    grid-template-columns: repeat(3, 2fr);
+    grid-gap: 5px;
+    position: relative;
+    left: 160px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+  }
+  
+  .product-item {/* 상품 목록 내부에 위치한 각 상품 아이템(div)의 스타일을 설정*/
+    border: 1px solid #ccc;
+    padding: 1px;
+    text-align: center;
+    width: 100px;
+    height: 100%;
+  }
+  
+  .product-item img {/*각 상품 아이템 내부에 위치한 이미지(img)의 스타일을 설정*/
+    max-width: 100%;
+    
+  }
+  
+  .product-item h3 {/* 각 제품의 제목 설정*/
+    margin-top: 10px;
+    margin-bottom: 0px;
+  }
+  
+  .product-item p {
+    margin: 5px 0;
+  }
+  
+  .product-item button {/*각 제품에 대한 버튼 설정*/
+    background-color: gray;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  
+  .product-item button:hover {/*버튼이 마우스 커서 위에 있을 때 스타일을 변경*/
+    background-color: #ec8fb3;
+  }
+  
+  
+  
