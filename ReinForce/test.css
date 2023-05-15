@@ -1,0 +1,41 @@
+*{
+  box-sizing: border-box;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: row;
+  }
+  
+  h1 {
+    font-size: 2em;
+    text-shadow: 2px 2px 0 rgba(0,0,0,1);
+  }
+  
+  #success-probability {
+    font-weight: bold;
+    text-shadow: 2px 2px 0 rgba(0,0,0,1);
+  }
+  
+  #enhancement-level {
+    font-weight: bold;
+    font-size: 1.2em;
+    text-shadow: 2px 2px 0 rgba(0,0,0,1);
+  }
+  
+  button {
+    padding: 10px;
+    font-size: 1.2em;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #3E8E41;
+  }
+  

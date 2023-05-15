@@ -38,4 +38,9 @@ $(document).ready(function() {
       city = $(this).val();
       updateWeather();
     });
-  });
+
+   
+    
+  
+
+});

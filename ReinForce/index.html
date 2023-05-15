@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+      button {
+        margin: 5px;
+      }
+      .result {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>아이템 강화 시뮬레이션</h1>
+    <p>현재 강화 단계: <span id="current-level">1</span></p>
+    <button onclick="attemptUpgrade()" id="upgrade-button">강화하기</button>
+    <button onclick="reset()">리셋</button>
+    <p>결과: <span class="result" id="result"></span></p>
+
+    <script>
+      const UPGRADE_SUCCESS_RATE = [0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.5, 0.45, 0.4, 0.35, 0.3, 1];
+      const DESTROY_RATES = Array(16).fill(0);
+      
+      const RESET_LEVEL = 1;
+      const MAX_LEVEL = 18;
+      
+      let currentLevel = RESET_LEVEL;
+      let result = "";
+      
+      function attemptUpgrade() {
+        if (currentLevel === MAX_LEVEL) {
+          document.getElementById("upgrade-button").disabled = true;
+          result = "이미 최고 강화 단계입니다.";
+          updateDisplay();
+          return;
+        }
+
+        const successRate = UPGRADE_SUCCESS_RATE[currentLevel - 1];
+        const randomValue = Math.random();
+        if (randomValue < successRate) {
+          if (currentLevel === 16) {
+            currentLevel = MAX_LEVEL;
+            result = `성공! 현재 강화 단계: ${currentLevel}. 아이템 강화가 완료되었습니다!`;
+            document.getElementById("upgrade-button").disabled = true;
+          } else {
+            currentLevel++;
+            result = `성공! 현재 강화 단계: ${currentLevel}`;
+          }
+        } else {
+          result = `실패! 현재 강화 단계: ${currentLevel}`;
+        }
+        updateDisplay();
+      }
+      
+      function reset() {
+        document.getElementById("upgrade-button").disabled = false;
+        currentLevel = RESET_LEVEL;
+        result = "";
+        updateDisplay();
+      }
+      
+      function updateDisplay() {
+        document.getElementById("current-level").textContent = currentLevel;
+        document.getElementById("result").textContent = result;
+      }
+    </script>
+  </body>
+</html>

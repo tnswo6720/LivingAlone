@@ -1,0 +1,43 @@
+/* 전체 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* 헤더 스타일 */
+  header {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  /* 메인 스타일 */
+  main {
+    margin: 20px;
+  }
+  
+  /* 회원 정보 테이블 스타일 */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  th, td {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+    color: #333;
+  }
+  
+  /* 푸터 스타일 */
+  footer {
+    background-color: #ffffff;
+    padding: 10px;
+    text-align: center;
+  }

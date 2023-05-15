@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>강화 아이템</title>
+    <link rel="stylesheet" href="./test.css">
+  </head>
+  <body>
+    <h1>강화 아이템</h1>
+    <p>현재 강화 성공 확률: <span id="success-probability"></span></p>
+    <p>현재 아이템 강화 수치: <span id="enhancement-level">0</span></p>
+    <p>다음 강화 시 달성 가능한 강화 수치: <span id="next-enhancement-level">1</span></p>
+    <button id="enhance-button">강화하기</button>
+    <script>
+      class EnhancementItem {
+        constructor() {
+          this.enhancementLevel = 0;
+          this.successProbability = 0.95;
+          this.attemptCount = 0;
+        }
+
+        enhance() {
+          this.attemptCount++;
+          let nextEnhancementLevel = this.enhancementLevel + 1;
+          let nextSuccessProbability = 0;
+          if (this.enhancementLevel >= 15) {
+            nextSuccessProbability = 0.3;
+          } else if (this.enhancementLevel == 0) {
+            nextSuccessProbability = 0.95;
+          } else {
+            nextSuccessProbability = Math.max(0.2, 0.9 - (this.enhancementLevel - 1) * 0.05);
+          }
+
+          if (Math.random() < nextSuccessProbability) {
+            this.enhancementLevel = nextEnhancementLevel;
+            if (this.enhancementLevel >= 15) {
+              nextSuccessProbability = 0.3;
+            } else {
+              nextSuccessProbability = Math.max(0.2, 0.9 - (this.enhancementLevel - 1) * 0.05);
+            }
+            nextEnhancementLevel++;
+          }
+          document.getElementById("next-enhancement-level").textContent = nextEnhancementLevel.toString();
+          return {enhancementLevel: this.enhancementLevel, successProbability: nextSuccessProbability};
+        }
+      }
+
+      const enhanceButton = document.getElementById("enhance-button");
+      const successProbabilityElement = document.getElementById("success-probability");
+      const enhancementLevelElement = document.getElementById("enhancement-level");
+
+      const item = new EnhancementItem();
+
+      enhanceButton.addEventListener("click", () => {
+        const {enhancementLevel, successProbability} = item.enhance();
+        successProbabilityElement.textContent = `${Math.round(successProbability * 100)}%`;
+        enhancementLevelElement.textContent = enhancementLevel.toString();
+      });
+    </script>
+  </body>
+</html>

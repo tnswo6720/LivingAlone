@@ -1,0 +1,76 @@
+/* 전체 스타일 */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: Arial, sans-serif;
+	font-size: 16px;
+	line-height: 1.5;
+	color: #333;
+	background-color: #f5f5f5;
+}
+
+/* 헤더 스타일 */
+header {
+	background-color: #333;
+	color: #fff;
+	padding: 20px;
+}
+
+header h1 {
+	font-size: 32px;
+	margin-bottom: 10px;
+}
+
+nav ul {
+	list-style: none;
+	display: flex;
+}
+
+nav li {
+	margin-right: 20px;
+}
+
+nav a {
+	color: #fff;
+	text-decoration: none;
+	font-weight: bold;
+	font-size: 18px;
+	transition: color 0.2s;
+}
+
+nav a:hover {
+	color: #ccc;
+}
+
+/* 메인 스타일 */
+main {
+	padding: 20px;
+}
+
+section {
+	margin-bottom: 20px;
+	padding: 20px;
+	background-color: #fff;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+section h2 {
+	font-size: 24px;
+	margin-bottom: 10px;
+}
+
+/* 푸터 스타일 */
+footer {
+    height: 50px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+	background-color: #333;
+	color: #fff;
+	padding: 20px;
+	text-align: center;
+}

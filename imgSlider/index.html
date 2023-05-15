@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이미지 카루셀 예시</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <style>
+      /* 컨트롤 버튼 스타일 */
+      .carousel-control-prev-icon,
+      .carousel-control-next-icon {
+          background-color: rgba(0, 0, 0, 0.5);
+          padding: 18px;
+          border-radius: 50%;
+      }
+      
+      /* 버튼 호버 효과 */
+      .carousel-control-prev:hover,
+      .carousel-control-next:hover {
+          opacity: 0.8;
+      }
+  </style>
+</head>
+
+
+
+<body>
+    <div id="demo" class="carousel slide" data-ride="carousel">
+        <!-- Indicators(선택적) -->
+        <ul class="carousel-indicators">
+            <li data-target="#demo" data-slide-to="0" class="active"></li>
+            <li data-target="#demo" data-slide-to="1"></li>
+            <li data-target="#demo" data-slide-to="2"></li>
+        </ul>
+        
+        <!-- Slides 이미지와 타이틀 -->
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="img1.jpg" alt="이미지1" class="w-100">
+                <div class="carousel-caption">
+                    <h3>이미지1</h3>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="img2.jpg" alt="이미지2" class="w-100">
+                <div class="carousel-caption">
+                    <h3>이미지2</h3>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="img3.jpg" alt="이미지3" class="w-100">
+                <div class="carousel-caption">
+                    <h3>이미지3</h3>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 이전/다음 컨트롤 -->
+        <a class="carousel-control-prev" href="#demo" data-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        
+        <a class="carousel-control-next" href="#demo" data-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </a>
+
+    </div>
+</body>
+
+</html>

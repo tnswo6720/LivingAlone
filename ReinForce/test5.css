@@ -1,0 +1,94 @@
+*{
+    box-sizing: border-box;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+  }
+
+
+  
+  body {
+    
+    /* font-family: Arial, sans-serif;
+    display: flex;
+    margin-top: 150px;
+    margin-left: 650px;
+    
+    width: 300px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-image: url(./seren.png);
+    background-repeat: no-repeat;
+    /* background-size:cover; */
+    
+    
+
+    
+  }
+  
+  .container{
+   
+    /* background-image: url(./star.png);
+    background-repeat: no-repeat;
+    background-position: center; */
+    font-family: Arial, sans-serif;
+    display: flex;
+    margin-top: 150px;
+    margin-left: 650px;
+    border-radius: 30px;
+    width: 400px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-image: url(./m.png);
+    background-repeat: no-repeat;
+    /* background-size:cover; */
+    object-fit: cover;  /*  이미지가 찌그러지지 않게 끔 해주는 것*/
+  }
+
+  
+ 
+  h1 {
+    font-size: 2em;
+    text-align: center;
+    /* color: rgb(230, 230, 0); */
+    color: mintcream;
+    font-weight: 800;
+  }
+ 
+  .wrapper p{
+    color: mintcream;
+  }
+
+  #success-probability {
+    font-weight: bold;
+    color: mintcream;
+  }
+  
+  #enhancement-level {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: mintcream;
+  }
+
+  #next-enhancement-level {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: mintcream;
+  }
+  
+  button {
+    padding: 10px;
+    font-size: 1.2em;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+   
+   
+  }
+  
+  button:hover {
+    background-color: #3E8E41;
+  }
+  

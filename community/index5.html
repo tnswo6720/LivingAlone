@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>커뮤니티 게시판</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+        margin: 20px;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    .left {
+      flex: 1;
+      border-right: 1px solid #CCCCCC;
+      padding: 10px;
+    }
+    .middle {
+      /* flex: 2; */
+      padding: 5px 10px;
+    }
+    .right {
+      flex: 3;
+      padding: 10px;
+      position: relative;
+    }
+    .search-form {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+    .write-btn {
+      margin-bottom: 15px;
+    }
+    .post-list {
+      display: flex;
+      flex-direction: column;
+    }
+    .post-list-item {
+      margin-bottom: 10px;
+    }
+    .post-write-form {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="left">
+      <ul>
+        <li><a href="#">공지사항</a></li>
+        <li><a href="#">잡담</a></li>
+        <li><a href="#">10추글</a></li>
+        <li><a href="#">30추글</a></li>
+      </ul>
+    </nav>
+    <div class="middle">
+    </div>
+    <div class="right">
+      <button class="write-btn">글쓰기</button>
+      <div class="post-list">
+        <div class="post-list-item">
+          <h5>제목 1</h5>
+          <p>내용 일부분이 들어갈 자리입니다. 내용 일부분이 들어갈 자리입니다...</p>
+        </div>
+        <div class="post-list-item">
+          <h5>제목 2</h5>
+          <p>내용 일부분이 들어갈 자리입니다. 내용 일부분이 들어갈 자리입니다...</p>
+        </div>
+      </div>
+      <form class="post-write-form">
+        <div class="form-group">
+          <label for="post-title">제목</label>
+          <input type="text" class="form-control" id="post-title">
+        </div>
+        <div class="form-group">
+          <label for="post-content">내용</label>
+          <textarea class="form-control" id="post-content" rows="5"></textarea>
+        </div>
+        <button class="btn btn-primary">작성완료</button>
+        <button class="btn btn-secondary">취소</button>
+      </form>
+      <form class="search-form">
+        <input type="text" name="search" placeholder="검색 폼">
+      </form>
+    </div>
+  </div>
+  <script>
+    const writeBtn = document.querySelector('.write-btn');
+    const postList = document.querySelector('.post-list');
+    const postWriteForm = document.querySelector('.post-write-form');
+    const searchForm = document.querySelector('.search-form');
+    const completeBtn = postWriteForm.querySelector('.btn.btn-primary');
+    const cancelBtn = postWriteForm.querySelector('.btn.btn-secondary');
+
+    function showPostList() {
+      postList.style.display = 'block';
+      postWriteForm.style.display = 'none';
+      searchForm.style.display = 'block';
+    }
+
+    function showPostWriteForm() {
+      postList.style.display = 'none';
+      postWriteForm.style.display = 'block';
+      searchForm.style.display = 'none';
+    }
+
+    writeBtn.addEventListener('click', showPostWriteForm);
+    completeBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+      showPostList();
+    });
+    cancelBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+      showPostList();
+    });
+  </script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
