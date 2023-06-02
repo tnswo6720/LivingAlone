@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>계단 게임</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #222;
+    margin: 0;
+  }
+  .player, .ghost {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+  }
+  .player {
+    background-color: blue;
+  }
+  .ghost {
+    background-color: red;
+    visibility: hidden;
+  }
+</style>
+</head>
+<body>
+  <div class="player"></div>
+  <div class="ghost"></div>
+  <script>
+    const player = document.querySelector(".player");
+    const ghost = document.querySelector(".ghost");
+    let playerY = 0;
+
+    function showGhost() {
+      ghostY = Math.floor(Math.random() * 10);
+      ghost.style.top = `${ghostY * 50}px`;
+      ghost.style.visibility = "visible";
+    }
+
+    function movePlayer(e) {
+      if (e.key === 'ArrowUp') {
+        if (playerY > 0) {
+          playerY -= 1;
+        }
+      } else if (e.key === 'ArrowDown') {
+        playerY += 1;
+      }
+      player.style.top = `${playerY * 50}px`;
+
+      if (player.style.top === ghost.style.top) {
+        alert("귀신을 만났습니다!");
+      }
+    }
+
+    document.addEventListener('keydown', movePlayer);
+    setTimeout(showGhost, Math.random() * 5000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html> 
+<html lang="ko"> 
+    <head> <meta charset="UTF-8"> 
+    <meta name="viewport" 
+    content="width=device-width, initial-scale=1.0"> 
+    <title>커뮤니티 게시판</title> 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> 
+    <style> 
+    
+    * {
+     box-sizing: border-box;   
+    }
+    
+    /* 숨겨진 요소 스타일 */ 
+    
+    .hidden { display: none; }
+    /* 기본 바디 스타일 */
+    
+    body{
+        margin: 0;
+        padding: 0;
+    }
+    
+    /* 게시판 타이틀 스타일 */
+    .title-wrapper{
+        background-color: #f9d6e8;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .title{
+        font-size: 30px;
+        font-weight: bold;
+        color: #ffffff;
+        font-family: "맑은 고딕", "Arial", sans-serif;
+    }
+
+    /* 댓글 리스트 스타일 */
+    .comments-list {
+        list-style-type: none;
+        padding: 0;
+    }
+    
+    /* 버튼 리스트 스타일 */
+    .button-list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* 버튼 그룹 스타일 */
+    .btn-group {
+        margin-bottom: 1rem
+    }
+
+    /* 게시물 리스트 마진 스타일 */
+    #post-list {
+        margin-top: 1.5rem;
+    }
+</style>
+</head> <body> <!-- 타이틀 표시 --> <div class="title-wrapper"> <span class="title">나혼자살래</span> </div>
+<!-- 컨테이너 설정 -->
+<div class="container">
+    <h1 class="my-4">커뮤니티 게시판</h1>
+    <div>
+        <!-- 버튼 그룹 설정 -->
+        <div class="col-md-8 button-list">
+            <div class="btn-group" role="group"> 
+                <button id="writeButton" onclick="showPostWrite();" class="btn btn-primary mb-4">글 작성하기</button>
+                <button id="allPostsButton" onclick="showAllPosts();" class="btn btn-info mb-4">전체 글 보기</button>
+                <button id="categoryPostsButton1" onclick="showCategoryPosts('여행지');" class="btn btn-info mb-4">여행지 글보기</button>
+                <button id="categoryPostsButton2" onclick="showCategoryPosts('생활');" class="btn btn-info mb-4">생활 글보기</button>
+                <button id="topPostsButton" onclick="showTopPosts();" class="btn btn-info mb-4">추천 많이 받은 글 보기</button>
+
+            </div>
+            <!-- 게시물 리스트 숨김 설정 -->
+            <ul id="post-list" class="hidden"></ul>
+        </div>
+
+        <!-- 작성 폼 설정 및 반응 설정 -->
+        <form id="post-write-form" class="post-write hidden" onsubmit="return false;">
+            <div class="form-group">
+                <label for="post-title">제목</label>
+                <input type="text" class="form-control" id="post-title" placeholder="제목을 입력하세요">
+            </div>
+            <div class="form-group">
+                <label for="post-category">카테고리</label>
+                <select class="form-control" id="post-category">
+                    <option value="잡담">잡담</option>
+                    <option value="여행지">여행지</option>
+                    <option value="생활">생활</option>
+                   
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="post-content">내용</label>
+                <textarea class="form-control" id="post-content" rows="5" placeholder="내용을 입력하세요"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="post-image">이미지 첨부</label>
+                <input type="file" class="form-control-file" id="post-image" accept="image/*">
+            </div>
+            <!-- 유튜브 링크 입력 설정 -->
+            <div class="form-group">
+                <label for="youtube-url">유튜브 URL (선택):</label>
+                <input type="text" class="form-control" id="youtube-url" placeholder="유튜브 주소를 입력하세요">
+            </div>
+            <button onclick="savePost();" class="btn btn-primary">작성완료</button>
+            <button onclick="showPostList();" type="button" class="btn btn-secondary">취소</button>
+        </form>
+        
+        <!-- 게시물 디테일 설정 -->
+        <div id="post-view" class="post-view hidden">
+        </div>
+    </div>
+</div>
+
+    <script>  
+        /* 초기화 및 전역 변수 설정 */
+        let currentPostIndex;
+        const savedPosts = [];
+        const postListElem = document.getElementById('post-list');
+        const postWriteForm = document.getElementById('post-write-form');
+        const postView = document.getElementById('post-view');
+
+           /* 폼 초기화 함수 */
+        function resetForm() {
+            document.getElementById('post-title').value = '';
+            document.getElementById('post-content').value = '';
+            document.getElementById('post-image').value = '';
+            document.getElementById('youtube-url').value = ''; // 추가
+        }
+
+         /* 작성화면 열기 함수 */
+        function showPostWrite() {
+            postListElem.classList.add('hidden');
+            postWriteForm.classList.remove('hidden');
+            postView.classList.add('hidden');
+      }
+
+      /* 리스트화면 열기 함수 */
+        function showPostList() {
+            postListElem.classList.remove('hidden');
+            postWriteForm.classList.add('hidden');
+            postView.classList.add('hidden');
+            resetForm();
+            renderPostList();
+            document.getElementById('writeButton').style.display = 'block';
+            document.getElementById('topPostsButton').style.display = 'block';
+            document.querySelector('.btn-group').classList.remove('hidden');
+        }
+
+          /* 디테일 화면 열기 함수 */
+        function showPostDetail(index) {
+            postListElem.classList.add('hidden');
+            postWriteForm.classList.add('hidden');
+            postView.classList.remove('hidden');
+            renderPostDetail(index);
+            document.getElementById("writeButton").style.display = "none";
+            document.getElementById("topPostsButton").style.display = "none";
+            document.querySelector('.btn-group').classList.add('hidden');
+            renderPostDetail(index);
+        document.getElementById('post-list').classList.add('hidden');
+        }
+
+        /* 작성 내용 저장 함수 */
+        function savePost() {
+            const title = document.getElementById('post-title').value;
+            const content = document.getElementById('post-content').value;
+            const file = document.getElementById('post-image').files[0];
+            const youtubeUrl = document.getElementById('youtube-url').value;
+            const category = document.getElementById('post-category').value;
+
+              /* 저장 */
+            savedPosts.push({
+                title,
+                content,
+                file,
+                youtubeUrl,
+                category, // 카테고리 추가
+                upVotes: 0,
+                downVotes: 0,
+                comments: [],
+            });
+
+            showPostList();
+        }
+
+         /* 게시물 리스트 렌더 함수 */
+        function renderPostList(posts = savedPosts) {
+            postListElem.innerHTML = '';
+
+            posts.forEach((post, index) => {
+                postListElem.innerHTML += `
+                    <li class="list-group-item" onclick="showPostDetail(${index})">
+                        <span>${post.title}</span> - <span>${post.category}</span>
+                    </li>`;
+            });
+        }
+
+            /* 게시물 디테일 렌더 함수 */
+        function renderPostDetail(index) {
+            currentPostIndex = index;
+            const post = savedPosts[index];
+            const reader = new FileReader();
+        
+            const videoId = getYouTubeVideoId(post.youtubeUrl); // 추가
+
+            reader.onloadend = function () {
+                postView.innerHTML = `
+                    <h2>${post.title}</h2>
+                    <p>${post.content}</p>
+                    ${post.file ? `<img src="${reader.result}" alt="" >` : ''}
+                    ${post.youtubeUrl ? `<iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>` : ""}
+                    <div class="mt-3">
+                        <button id="upvote-count" onclick="upVote(currentPostIndex)" class="btn btn-link">&#128077; ${post.upVotes}</button>
+                        <button id="downvote-count" onclick="downVote(currentPostIndex)" class="btn btn-link">&#128078; ${post.downVotes}</button>
+                        <button onclick="showPostList()" class="btn btn-secondary">뒤로</button>
+                    </div>
+                    <div id="comments-section">
+                        <h2>댓글 목록</h2>
+                        <ul id="comments-list" class="comments-list"></ul>
+                        <h5>댓글 작성</h5>
+                        <form id="comment-form" onsubmit="addComment(event); return false;">
+                            <input type="text" class="form-control" id="comment-text" placeholder="댓글을 입력하세요">
+                            <button type="submit" class="btn btn-primary mt-2">댓글달기</button>
+                        </form>
+                    </div>`;
+                renderComments();
+            };
+
+            if (post.file) {
+                reader.readAsDataURL(post.file);
+            } else {
+                reader.onloadend();
+            }
+        }
+
+        //유튜브 링크 추가
+        function getYouTubeVideoId(url) {
+            const regex = /(?:youtube(?:-nocookie)?\.com\/[^\/\s]+\/|(?:https?:\/\/)?(?:www\.)?(?:youtube.com\/watch\?(?:.*&)v=|(?:youtu\.be\/)))([0-9A-Za-z-_]{11})/;
+            const match = url.match(regex);
+            return match && match[1] ? match[1] : null;
+        }
+
+        renderPostList();
+
+        //댓글 코멘트
+        function addComment(event) {
+            event.preventDefault();
+            const commentText = document.getElementById("comment-text").value;
+            const commentAuthor = "사용자 닉네임"; // 사용자가 입력한 닉네임으로 변경해야 합니다.
+            const commentTime = new Date().toLocaleString();
+            if (commentText.length === 0) {
+                alert("댓글 내용을 입력하세요.");
+                return;
+            }
+            savedPosts[currentPostIndex].comments.push({ text: commentText, author: commentAuthor, time: commentTime });
+            document.getElementById("comment-text").value = "";
+            renderComments();
+        }
+
+        function renderComments() {
+            const commentsListElem = document.getElementById('comments-list');
+            const comments = savedPosts[currentPostIndex].comments;
+            commentsListElem.innerHTML = '';
+            comments.forEach((comment, index) => {
+                commentsListElem.innerHTML += `<li class="list-group-item"><strong>${comment.author}</strong> (${comment.time}): ${comment.text}</li>`;
+            });
+        }
+
+        function upVote(index) {
+            savedPosts[index].upVotes += 1;
+            updateVoteCount(index);
+        }
+
+        function downVote(index) {
+            savedPosts[index].downVotes += 1;
+            updateVoteCount(index);
+        }
+
+        function updateVoteCount(index) {
+            const upvoteCount = document.getElementById('upvote-count');
+            const downvoteCount = document.getElementById('downvote-count');
+            upvoteCount.innerHTML = `&#128077; ${savedPosts[index].upVotes}`;
+            downvoteCount.innerHTML = `&#128078; ${savedPosts[index].downVotes}`;
+        }
+
+        function showTopPosts() {
+  const topPosts = savedPosts.filter(post => post.upVotes >= 5);
+  postListElem.classList.remove('hidden');
+  renderPostList(topPosts);
+}
+
+// 카테고리에 따른 게시물 필터링 함수 추가
+function showCategoryPosts(category) {
+            const filteredPosts = savedPosts.filter((post) => post.category === category);
+            renderPostList(filteredPosts);
+        }
+
+ //전체 글 보기 함수 추가
+        function showAllPosts() {
+    renderPostList(savedPosts);
+}
+
+    </script>
+</body>
+</html>

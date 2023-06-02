@@ -1,0 +1,204 @@
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>생활 게시판</title>
+  <style>
+    /* 스타일 코드 */
+    .container {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      height: 100vh;
+      padding-left: 1rem;
+    }
+    .map-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    /* 지도의 현재 스타일 설정 */
+    #map {
+      width: 300px;
+      height: 300px;
+      border-radius: 20px;
+    }
+    /* 안내 멘트의 위치 설정 */
+    .current-location {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 1rem;
+      width: 300px;
+    }
+    .board {
+      
+      width: 30%;
+      height: 200px;
+      margin-left: 1rem;
+    }
+
+    
+  .head {
+    margin-top: 30px !important;
+    background-color: #B0E0E6;
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 10px;
+      
+    
+  }
+  
+  .head a {
+    color: white;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  /* 로그인과 회원가입 */
+  .authentication-buttons {
+    position: absolute;
+    top: 10px; /* 위치 조정 */
+    right: 0;
+  }
+  
+  .login-button, .signup-button {
+    display: inline-block;
+    color: white;
+    background-color: #B0E0E6;
+    padding: 10px;
+    border: none;
+    text-decoration: none;
+    border-radius: 20px;
+    
+  }
+
+  h1 a {
+    color: #B0E0E6;
+    text-shadow: 2px 2px 4px #B0E0E6;
+    font-size: 35px; /* 예시 값, 필요에 따라 조절해주세요 */
+    text-decoration: none;
+  }
+
+  .search {
+    position: absolute;
+    top: 50px; /* nav.menu의 높이만큼 여백 추가 */
+    right: 0;
+  }
+  
+  .search__pink {
+    margin-top: 5px;
+    background-color: #B0E0E6;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 16px;
+    color: white;
+  }
+  
+  </style>
+  <!-- 카카오 지도 API 스크립트 추가 -->
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=32cd3d55a131b8db3a46c1d1790fb3db"></script>
+</head>
+<body>
+    
+
+    <h1><a href="../Main/test23.html">나혼자살래</a></h1>
+<div class="authentication-buttons">
+    <a href="../login/loing1.html" class="login-button">로그아웃</a>
+    <a href="signup.html" class="signup-button">회원가입</a>
+</div>
+<form class="search">
+     <input type="text" id="search-input" placeholder="검색어를 입력하세요" class="search__pink">
+     <button type="submit" class="search__pink">검색</button>
+ </form>
+ 
+      
+
+
+<div class="head">
+
+<a href="#">생활정보</a>
+<a href="#">사진공유 </a>
+
+</div>
+  <div class="container">
+    <div class="map-wrapper">
+      <div id="map"></div>
+      <p class="current-location">이용자 현재 위치</p>
+    </div>
+    <div class="board">
+      <!-- 여기에 생활 게시판 요소 추가 -->
+    </div>
+  </div>
+  <script>
+    // 카카오 지도 API를 사용한 지도 생성 및 위치 설정
+    var mapContainer = document.getElementById('map'),
+      mapOption = {
+        center: new kakao.maps.LatLng(37.56682, 126.97865),
+        level: 3
+      };
+    var map = new kakao.maps.Map(mapContainer, mapOption);
+
+    // 사용자 정보 및 특정 위치 추천 기능 구현
+    var userPrefs = {
+      'user1': {
+        lat: 37.56682,
+        lng: 126.97865
+      },
+      // 여기에 사용자 위치 정보 추가
+    };
+
+    // 카카오 지도 API를 사용하여 사용자 위치를 표시하는 함수
+    function showUserLocation(userId) {
+      var userLocation = new kakao.maps.LatLng(userPrefs[userId].lat, userPrefs[userId].lng);
+      map.setCenter(userLocation);
+    }
+
+    // 예시: user1의 위치를 지도에 표시
+    showUserLocation('user1');
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

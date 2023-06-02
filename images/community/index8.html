@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>커뮤니티 게시판</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+        margin: 20px;
+    }
+
+    .container {
+        border: 2px solid blue;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 0 10px;
+    }
+
+    .nav-container {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #CCCCCC;
+    }
+    
+    .left {
+      flex: 1;
+      border-right: 1px solid #CCCCCC;
+      padding: 10px;
+    }
+    .middle {
+      flex: 2;
+      padding: 5px 10px;
+    }
+    .right {
+      flex: 3;
+      padding: 10px;
+      position: relative;
+    }
+    
+    .control-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    .write-btn {
+      margin-bottom: 15px;
+    }
+    .post-list {
+      display: flex;
+      flex-direction: column;
+    }
+    .post-list-item {
+      margin-bottom: 10px;
+    }
+    .post-write-form {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="nav-container">
+    <nav class="left">
+      <ul>
+        <li><a href="#">공지사항</a></li>
+        <li><a href="#">잡담</a></li>
+        <li><a href="#">10추글</a></li>
+        <li><a href="#">30추글</a></li>
+      </ul>
+    </nav>
+    <nav class="middle"></nav>
+  </div>
+  <div class="container">
+    <div class="right">
+      <div class="control-container">
+        <button class="write-btn">글쓰기</button>
+        <form class="search-form" onsubmit="event.preventDefault(); searchPosts();">
+          <input type="text" name="search" placeholder="검색어 입력">
+        </form>
+      </div>
+      <div class="post-list">
+      </div>
+      <form class="post-write-form" onsubmit="event.preventDefault(); savePost();">
+        <div class="form-group">
+          <label for="post-title">제목</label>
+          <input type="text" class="form-control" id="post-title">
+        </div>
+        <div class="form-group">
+          <label for="post-content">내용</label>
+          <textarea class="form-control" id="post-content" rows="5"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">작성완료</button>
+        <button type="button" class="btn btn-secondary" onclick="cancelPost();">취소</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const writeBtn = document.querySelector('.write-btn');
+    const postList = document.querySelector('.post-list');
+    const postWriteForm = document.querySelector('.post-write-form');
+    const searchForm = document.querySelector('.search-form');
+
+    const savedPosts = [];
+
+    function showPostList() {
+      postList.style.display = 'block';
+      postWriteForm.style.display = 'none';
+      renderPosts();
+    }
+
+    function showPostWriteForm() {
+      postList.style.display = 'none';
+      postWriteForm.style.display = 'block';
+    }
+
+    function cancelPost() {
+      resetForm();
+      showPostList();
+    }
+
+    function resetForm() {
+      document.getElementById('post-title').value = '';
+      document.getElementById('post-content').value = '';
+    }
+
+    function savePost() {
+      const title = document.getElementById('post-title').value;
+      const content = document.getElementById('post-content').value;
+
+      savedPosts.push({ title, content });
+      resetForm();
+      showPostList();
+    }
+
+    function renderPosts() {
+      postList.innerHTML = '';
+      savedPosts.forEach((post) => {
+        const postListItem = document.createElement('div');
+        postListItem.classList.add('post-list-item');
+        postListItem.innerHTML = `
+          <h5>${post.title}</h5>
+          <p>${post.content}</p>
+        `;
+        postList.appendChild(postListItem);
+      });
+    }
+
+    function searchPosts() {
+      const keyword = searchForm.querySelector('input[name="search"]').value;
+      // Here you can search the posts based on the keyword entered by the user
+      // For example, AJAX or fetch API can be used to filter posts in the savedPosts array
+    }
+
+    writeBtn.addEventListener('click', showPostWriteForm);
+  </script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+

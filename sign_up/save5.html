@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>save</title>
+    <!-- jquery cdn -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.2-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-pzjw8f+ua7Kw1TIq0v8FqFjcJ6pajs/rfdfs3SO+kD4Ck5BdPtF+to8xMmckePr/h" crossorigin="anonymous">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f3f3f3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .form-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 500px;
+            width: 90%;
+            margin: 0 auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="submit"], .btn-primary {
+            background-color:  #FFB6C1;
+            color: white;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        input[type="submit"]:hover, .btn-primary:hover {
+            background-color:  #FFB6C1;
+        }
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: black; /* 추가: 글씨 색상 변경 */
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="password"], input[type="date"], input[type="email"], select {
+            width: 100%;
+            padding: 8px 12px;
+            font-size: 14px;
+            border-radius: 4px;
+            border: 1px solid #dcdcdc;
+            box-sizing: border-box;
+        }
+
+        p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<!-- action 속성: form에 작성한 데이터를 어디로 보낼지 지정 -->
+
+<div class="form-container">
+    <h2>회원가입</h2>
+    <form action="/member/save" method="post">
+        <!-- name속성: 서버로 전송할 때 변수 이름의 역할 -->
+
+        <div class="form-group">
+            <label for="memberEmail">이메일:</label>
+            <input type="text" name="memberEmail" id="memberEmail" onblur="emailCheck()" class="form-control"> <br>
+            <p id="check-result"></p>
+        </div>
+
+        <div class="form-group">
+            <label for="MemberPassword">비밀번호:</label>
+            <input type="password" id="MemberPassword" name="MemberPassword" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="confirm_password">비밀번호 확인:</label>
+            <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="memberName">이름:</label>
+            <input type="text" name="memberName" id="memberName" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="birthdate">생년월일:</label>
+            <input type="date" id="birthdate" name="birthdate" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="gender">성별:</label>
+            <select id="gender" name="gender" class="form-select">
+                <option value="male">남성</option>
+                <option value="female">여성</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="postcode">우편번호:</label>
+            <input type="text" id="postcode" name="postcode" placeholder="우편번호" class="form-control">
+            <input type="button" onclick="execDaumPostcode()" value="거주지 찾기" class="btn btn-primary mt-2">
+        </div>
+
+        <div class="form-group">
+            <label for="address">주소:</label>
+            <input type="text" id="address" name="address" placeholder="주소" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="detailAddress">상세주소:</label>
+            <input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="extraAddress">참고항목:</label>
+            <input type="text" id="extraAddress" name="extraAddress" placeholder="참고항목" class="form-control">
+        </div>
+
+        <input type="submit" value="회원가입" class="btn mt-3" style="width: 100%;">
+    </form>
+</div>
+</body>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+
+    function execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고항목 변수
+
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
+                }
+
+                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                if(data.userSelectedType === 'R'){
+                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                    if(extraAddr !== ''){
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                    // 조합된 참고항목을 해당 필드에 넣는다.
+                    document.getElementById("extraAddress").value = extraAddr;
+
+                } else {
+                    document.getElementById("extraAddress").value = '';
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('postcode').value = data.zonecode;
+                document.getElementById("address").value = addr;
+                // 커서를 상세주소 필드로 이동한다.
+                document.getElementById("detailAddress").focus();
+            }
+        }).open();
+    }
+</script>
+<script th:inline="javascript">
+    const emailCheck = () => {
+        const email = document.getElementById("memberEmail").value;
+        const checkResult = document.getElementById("check-result");
+        console.log("입력값: ", email);
+        $.ajax({
+            // 요청방식: post, url: "email-check", 데이터: 이메일
+            type: "post",
+            url: "/member/email-check",
+            data: {
+                "memberEmail": email
+            },
+            success: function(res) {
+                console.log("요청성공", res);
+                if (res == "ok") {
+                    console.log("사용가능한 이메일");
+                    checkResult.style.color = "green";
+                    checkResult.innerHTML = "사용가능한 이메일";
+                } else {
+                    console.log("이미 사용중인 이메일");
+                    checkResult.style.color = "red";
+                    checkResult.innerHTML = "이미 사용중인 이메일";
+                }
+            },
+            error: function(err) {
+                console.log("에러발생", err);
+            }
+        });
+    }
+</script>
+</html>

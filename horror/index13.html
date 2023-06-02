@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>비밀의 지하실</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #333;
+    }
+.main-container {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  padding: 50px;
+  max-width: 800px;
+  width: 90%;
+}
+
+.background {
+  position: relative;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  padding: 20px;
+  background-size: cover;
+  background-position: center;
+}
+
+.narrative {
+  font-size: 18px;
+  text-align: justify;
+}
+
+.choice {
+  display: block;
+  background-color: #ccc;
+  border: 1px solid #999;
+  border-radius: 5px;
+  color: #333;
+  font-size: 16px;
+  padding: 10px;
+  text-align: center;
+  margin-bottom: 10px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.choice:hover {
+  background-color: #aaa;
+}
+
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <div id="background" class="background">
+      <div class="narrative" id="narrative">
+        게임을 시작합니다. 선택지를 클릭해 주세요.
+      </div>
+      <button class="choice" id="optionA" onclick="makeDecision('A')">선택지 A</button>
+      <button class="choice" id="optionB" onclick="makeDecision('B')">선택지 B</button>
+    </div>
+  </div>
+  <script>
+    const narrative = document.getElementById('narrative');
+    const optionA = document.getElementById('optionA');
+    const optionB = document.getElementById('optionB');
+    const background = document.getElementById('background');
+    let currentStep = 0;
+    const script = [
+  {
+    narrative: '친구들과 쿠네쿠네 귀신의 전설로 유명한 논밭으로 모험을 떠납니다. 앞에 두 갈래의 길이 나타납니다. 어느 길로 갈까요?',
+    optionA: { text: '왼쪽으로 가기', nextStep: 1 },
+    optionB: { text: '오른쪽으로 가기', nextStep: 2 },
+  },
+  {
+    narrative: '왼쪽 길로 가다 보니 과거 논밭이였던 흔적을 발견합니다. 쿠네쿠네 귀신의 전설을 조사하겠습니까?',
+    optionA: { text: '논밭에서 전설 조사하기', nextStep: 3 },
+    optionB: { text: '두려워서 돌아가기', nextStep: 2 },
+  },
+  {
+    narrative: '오른쪽 길로 가다 보니 쿠네쿠네 귀신이 나타날 법한 곳이 나타납니다. 기록을 읽어볼까요?',
+    optionA: { text: '기록 읽기', nextStep: 4 },
+    optionB: { text: '무서워져서 왼쪽 길로 돌아가기', nextStep: 1 },
+  },
+  {
+    narrative: '전설의 조사를 한 결과, 쿠네쿠네 귀신이 나타날만한 실마리를 찾게 됩니다. 이것을 친구들과 공유할까요?',
+    optionA: { text: '친구들과 정보 공유하기', nextStep: 5 },
+    optionB: { text: '혼자 조사하고 싶어서 기록을 찾아보기', nextStep: 4 },
+  },
+  {
+    narrative: '기록을 읽어보니, 쿠네쿠네 귀신이 논밭에 나타날 때 몇 가지 신호가 있는 것 같습니다. 이를 기억하고 계속 탐험할 결심을 합니다.',
+    optionA: { text: '신호를 기억하고 계속 탐험하기', nextStep: 5 },
+    optionB: { text: '무서워져서 왼쪽 길로 돌아가서 조사하기', nextStep: 1 },
+  },
+  {
+    narrative: '정보를 공유한 후, 주변 논밭에서 쿠네쿠네 귀신이 나타날 것으로 예상되는 곳을 조사하기로 한다. 과연 귀신의 비밀을 밝혀낼 수 있을까?',
+    optionA: { text: '마지막 조사를 시작하려 한다.', nextStep: 6 },
+    optionB: { text: '무서워져서 그만두기로 한다.', nextStep: -1 },
+  },
+  {
+    narrative: '정보를 dd유한 후, 주변 논밭에서 쿠네쿠네 귀신이 나타날 것으로 예상되는 곳을 조사하기로 한다. 과연 귀신의 비밀을 밝혀낼 수 있을까?',
+    optionA: { text: '마지막 조사를 시작하려 한다.', nextStep: 6 },
+    optionB: { text: '무서워져서 그만두기로 한다.', nextStep: -1 },
+  },
+];
+
+
+function updateStory() {
+  if (currentStep === -1) {
+    window.location.reload();
+  } else {
+    narrative.textContent = script[currentStep].narrative;
+    optionA.textContent = script[currentStep].optionA.text;
+    optionB.textContent = script[currentStep].optionB.text;
+  }
+}
+
+function makeDecision(decision) {
+  const nextStep = script[currentStep]['option' + decision].nextStep;
+  currentStep = nextStep;
+  updateStory();
+}
+
+  </script>
+</body>
+</html>

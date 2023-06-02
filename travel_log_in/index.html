@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Weather Widget</title>
+    <link rel="stylesheet" href="test.css">
+  </head>
+  
+    <header>
+      <h1>나혼자살래</h1>
+      <div class="authentication-buttons">
+          <a href="../login/loing1.html" class="login-button">로그아웃</a>
+          <a href="../sign_up/save7.html" class="signup-button">회원가입</a>
+      </div>
+      <form class="search">
+           <input type="text" id="search-input" placeholder="검색어를 입력하세요" class="search__pink">
+           <button type="submit" class="search__pink">검색</button>
+       </form>
+   
+            
+      <nav class="menu">
+     <div class="menu__toggle">
+       <button class="menu__toggle-button">
+         <span class="menu__toggle-icon"></span>
+       </button>
+     </div>
+     <div class="menu__items">
+       <a href="#" class="menu__item">로그인</a>
+       <a href="#" class="menu__item">회원가입</a>
+       <a href="#" class="menu__item">고객센터</a>
+     </div>
+   </nav>
+  
+   
+  <div class="board">
+   
+    <a href="./check.html">설문조사</a>
+    <a href="#">여행정보 </a>
+    
+  </div>
+  <body>
+   
+  
+    </header>
+    <container>
+    <div id="weather-widget">
+      <h2>Seoul</h2>
+      <p>날씨: <span id="temperature"></span></p>
+      <p>기상정보: <span id="description"></span></p>
+    </div>
+
+  </container>
+    
+      
+  <div class="travel_list">
+    <iframe src="travel_list.html" frameborder="0" width="100%" height="100%"></iframe>
+  </div>
+    
+
+     
+ 
+    <!-- OpenWeatherMap API 호출을 위한 JavaScript 파일 로드  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="./index.js"></script>
+  </body>
+</html> 

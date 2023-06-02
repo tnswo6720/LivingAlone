@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>커뮤니티 게시판</title>
+  <style>
+    body {
+      margin: 20px;
+    }
+    .post-list-item {
+      border: 1px solid #cccccc;
+      margin-bottom: 10px;
+      padding: 10px;
+      cursor: pointer;
+    }
+    .post-view {
+      display: none;
+      border: 1px solid #cccccc;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>커뮤니티 게시판</h1>
+
+  <input type="file" id="fileInput" /><br />
+  <textarea id="postContent" placeholder="내용을 입력하세요"></textarea><br />
+  <button id="submitPost">게시하기</button>
+
+  <ul id="postList"></ul>
+  <div class="post-view" id="postView"></div>
+
+  <script>
+    const fileInput = document.getElementById("fileInput");
+    const postContent = document.getElementById("postContent");
+    const submitPost = document.getElementById("submitPost");
+    const postList = document.getElementById("postList");
+    const postView = document.getElementById("postView");
+
+    let posts = [];
+
+    function readImage(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+          resolve(event.target.result);
+        };
+
+        reader.readAsDataURL(file);
+      });
+    }
+
+    submitPost.addEventListener("click", async () => {
+      const content = postContent.value.trim();
+      const file = fileInput.files[0];
+      const date = new Date();
+      let img;
+      
+      if (file) {
+        img = await readImage(file);
+      }
+
+      const post = {
+        content,
+        img,
+        author: "요오호",
+        date: date.toISOString(),
+      };
+
+      posts.push(post);
+      renderPostList();
+      postContent.value = "";
+      fileInput.value = "";
+    });
+
+    function renderPostList() {
+      postList.innerHTML = "";
+
+      posts.forEach((post, index) => {
+        const listItem = document.createElement("li");
+        listItem.className = "post-list-item";
+        listItem.innerHTML = `
+          <div>
+            글 작성자: ${post.author} | 작성일: ${post.date}
+          </div>
+          <div>
+            ${post.content}
+          </div>
+        `;
+
+        listItem.addEventListener("click", () => {
+          postView.innerHTML = `
+            <div>
+              글 작성자: ${post.author} | 작성일: ${post.date}
+            </div>
+            <div>
+              ${post.content}
+            </div>
+            ${post.img ? `<img src="${post.img}" alt="첨부 이미지" />` : ""}
+          `;
+          postView.style.display = "block";
+        });
+
+        postList.appendChild(listItem);
+      });
+    }
+  </script>
+</body>
+</html>

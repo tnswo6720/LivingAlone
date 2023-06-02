@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>처녀귀신의 저주</title>
+</head>
+<body>
+    <h1 id="narrative"></h1>
+    <button id="optionA" onclick="makeDecision('A')"></button>
+    <button id="optionB" onclick="makeDecision('B')"></button>
+    <button id="optionC" onclick="makeDecision('C')"></button>
+
+    <script>
+        const narrative = document.getElementById('narrative');
+        const optionA = document.getElementById('optionA');
+        const optionB = document.getElementById('optionB');
+        const optionC = document.getElementById('optionC');
+        let currentStep = 0;
+
+        const script = [
+            {
+                narrative: '이 게임은 처녀귀신의 저주를 풀어주는 공포 게임입니다. 당신은 어느 날, 버려진 저택을 탐험하게 됩니다. 게임을 시작합니다.',
+                optionA: { text: '저택에 들어가기', nextStep: 1 },
+                optionB: { text: '돌아서 가기', nextStep: null },
+                optionC: { text: '', nextStep: null },
+            },
+            {
+                narrative: '저택의 문을 열고 들어갔습니다. 거실과 같은 공간을 발견했습니다. 확인할 것을 선택하세요.',
+                optionA: { text: '식당으로 가기', nextStep: 2 },
+                optionB: { text: '조각상을 조사하기', nextStep: 3 },
+                optionC: { text: '계단을 올라가기', nextStep: 4 },
+            },
+            //...
+        ];
+
+        function makeDecision(option) {
+            const step = script[currentStep];
+            const choice = step['option' + option];
+
+            if (choice.nextStep !== null) {
+                currentStep = choice.nextStep;
+                updateScene();
+            }
+        }
+
+        function updateScene() {
+            const step = script[currentStep];
+            narrative.textContent = step.narrative;
+            optionA.textContent = step.optionA.text;
+            optionB.textContent = step.optionB.text;
+            optionC.textContent = step.optionC.text;
+        }
+
+        updateScene();
+    </script>
+</body>
+</html>

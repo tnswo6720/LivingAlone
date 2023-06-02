@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>커뮤니티 게시판</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    .left {
+      flex: 1;
+      border-right: 1px solid #CCCCCC;
+      padding: 10px;
+    }
+    .middle {
+      flex: 2;
+      padding: 10px;
+    }
+    .right {
+      flex: 3;
+      padding: 10px;
+      position: relative; /* 추가된 코드 */
+    }
+    .search-form { /* 추가됨 */
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+    .write-btn {
+      margin-bottom: 15px;
+    }
+    .post-list {
+      display: flex;
+      flex-direction: column;
+    }
+    .post-list-item {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="left">
+      <ul>
+        <li><a href="#">공지사항</a></li>
+        <li><a href="#">잡담</a></li>
+        <li><a href="#">10추글</a></li>
+        <li><a href="#">30추글</a></li>
+      </ul>
+    </nav>
+    <div class="middle">
+      <!-- 검색 폼을 오른쪽 컨테이너로 옮김 -->
+    </div>
+    <div class="right">
+      <button class="write-btn">글쓰기</button>
+      <div class="post-list">
+        <div class="post-list-item">
+          <h5>제목 1</h5>
+          <p>내용 일부분이 들어갈 자리입니다. 내용 일부분이 들어갈 자리입니다...</p>
+        </div>
+        <div class="post-list-item">
+          <h5>제목 2</h5>
+          <p>내용 일부분이 들어갈 자리입니다. 내용 일부분이 들어갈 자리입니다...</p>
+        </div>
+        <!-- 더 많은 글 목록 아이템들 -->
+      </div>
+      <form class="search-form"> <!-- 수정된 코드: 클래스 추가 -->
+        <input type="text" name="search" placeholder="검색폼">
+      </form>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

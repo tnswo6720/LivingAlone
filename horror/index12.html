@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Adventure Game</title>
+</head>
+<style>
+    #ghostImage {
+        display: none;
+        position: absolute;
+        width: 100px;
+        right: 20px;
+        bottom: 20px;
+    }
+</style>
+<body id="background">
+    <h1>Text Adventure Game</h1>
+    <p id="narrative"></p>
+    <button id="optionA"></button>
+    <button id="optionB"></button>
+    <button id="optionC"></button>
+    <img src="ghost.png" alt="Ghost" id="ghostImage" />
+
+    <script>
+        const narrativeElement = document.getElementById('narrative');
+        const optionAElement = document.getElementById('optionA');
+        const optionBElement = document.getElementById('optionB');
+        const optionCElement = document.getElementById('optionC');
+        const ghostImage = document.getElementById('ghostImage');
+        const background = document.getElementById('background');
+        const script = [
+          {
+            narrative: '당신은 어두운 방에 서있습니다. 이곳을 조사하시겠습니까?',
+            optionA: { text: '조사한다', nextStep: 1 },
+            optionB: { text: '방을 나간다', nextStep: 2 },
+            optionC: { text: '이곳에서 대기한다', nextStep: 3 },
+          },
+          {
+            narrative: '조사 결과, 이 방에는 아무 것도 없는 것 같습니다. 이제 어떻게 하시겠습니까?',
+            optionA: { text: '다시 조사한다', nextStep: 1 },
+            optionB: { text: '방을 나간다', nextStep: 2 },
+            optionC: { text: '이곳에서 대기한다', nextStep: 3 },
+          },
+          {
+            narrative: '방 밖으로 나오니 길 상에 다른 사람이 있습니다. 그 사람에게 말을 던지겠습니까?',
+            optionA: { text: '말 걸기', nextStep: 5 },
+            optionB: { text: '무시하기', nextStep: 6 },
+            optionC: { text: '돌아가기', nextStep: 0 },
+          },
+          {
+            narrative: '귀신 앞에 서 있습니다. 귀신은 살인마로 밝혀졌습니다. 게임을 종료하시겠습니까?',
+            optionA: { text: '게임 재시작', nextStep: 0 },
+            optionB: { text: '게임 종료', nextStep: -1 },
+            optionC: { text: '요구르트를 꺼내 먹기', nextStep: 12 },
+            encounterGhost: true,
+          },
+          // ...
+        ];
+
+        let currentStep = 0;
+
+        function showGhostImage(isVisible) {
+          ghostImage.style.display = isVisible ? 'block' : 'none';
+          if (isVisible) {
+            background.style.backgroundColor = 'black';
+          } else {
+            background.style.backgroundColor = '';
+          }
+        }
+
+        function renderStep() {
+          narrativeElement.textContent = script[currentStep].narrative;
+          optionAElement.textContent = script[currentStep].optionA.text;
+          optionBElement.textContent = script[currentStep].optionB.text;
+          optionCElement.textContent = script[currentStep].optionC.text;
+
+          showGhostImage(script[currentStep].encounterGhost);
+        }
+
+        function makeDecision(choice) {
+          const selectedOption = script[currentStep]['option' + choice];
+
+          showGhostImage(script[currentStep].encounterGhost);
+
+          if (!selectedOption) return;
+          if (selectedOption.nextStep === -1) {
+            if (script[currentStep].encounterGhost) {
+              endGame();
+            }
+            return;
+          }
+
+          currentStep = selectedOption.nextStep;
+          renderStep();
+        }
+
+        function endGame() {
+          alert('게임을 종료하시겠습니까?');
+          location.reload();
+        }
+
+        optionAElement.addEventListener('click', () => makeDecision('A'));
+        optionBElement.addEventListener('click', () => makeDecision('B'));
+        optionCElement.addEventListener('click', () => makeDecision('C'));
+
+        renderStep();
+    </script>
+</body>
+</html>

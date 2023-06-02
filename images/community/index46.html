@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>커뮤니티 게시판</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      /* 숨겨진 요소 스타일 */
+
+      .hidden {
+        display: none;
+      }
+      /* 기본 바디 스타일 */
+
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      /* 게시판 타이틀 스타일 */
+      .title-wrapper {
+        background-color: #f9d6e8;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .title {
+        font-size: 30px;
+        font-weight: bold;
+        color: #ffffff;
+        font-family: "맑은 고딕", "Arial", sans-serif;
+      }
+
+      /* 댓글 리스트 스타일 */
+      .comments-list {
+        list-style-type: none;
+        padding: 0;
+      }
+      
+      /* 버튼 리스트 스타일 */
+      .button-list {
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* 버튼 그룹 스타일 */
+      .btn-group {
+        margin-bottom: 1rem;
+      }
+
+      /* 게시물 리스트 마진 스타일 */
+      #post-list {
+        margin-top: 1.5rem;
+      }
+
+      /* 이모티콘 폼 */
+      .emoji-picker {
+  display: none;
+  position: absolute;
+  z-index: 2; /* 추가 */
+  background-color: white; /* 추가 */
+  padding: 1rem; /* 추가 */
+  border: 1px solid #ccc; /* 추가 */
+  border-radius: 5px; /* 추가 */
+}
+
+        /* 이모티콘 버튼 */
+        .emoji-button {
+          position: relative;
+        }
+    </style>
+  </head>
+  <body>
+  <!-- 타이틀 표시 -->
+    <div class="title-wrapper">
+      <span class="title">나혼자살래</span>
+    </div>
+  <!-- 컨테이너 설정 -->
+    <div class="container">
+      <h1 class="my-4">커뮤니티 게시판</h1>
+      <div>
+        <!-- 버튼 그룹 설정 -->
+        <div class="col-md-8 button-list">
+          <div class="btn-group" role="group">
+            <button id="writeButton" onclick="showPostWrite();" class="btn btn-primary mb-4">글 작성하기</button>
+            <button id="allPostsButton" onclick="showAllPosts();" class="btn btn-info mb-4">전체 글 보기</button>
+            <button id="categoryPostsButton1" onclick="showCategoryPosts('여행지');" class="btn btn-info mb-4">여행지 글보기</button>
+            <button id="categoryPostsButton2" onclick="showCategoryPosts('생활');" class="btn btn-info mb-4">생활 글보기</button>
+            <button id="topPostsButton" onclick="showTopPosts();" class="btn btn-info mb-4">추천 많이 받은 글 보기</button>
+          </div>
+          <!-- 게시물 리스트 숨김 설정 -->
+          <ul id="post-list" class="hidden"></ul>
+        </div>
+
+        <!-- 작성 폼 설정 및 반응 설정 -->
+        <form id="post-write-form" class="post-write hidden" onsubmit="return false;">
+          <div class="form-group">
+            <label for="post-title">제목</label>
+            <input type="text" class="form-control" id="post-title" placeholder="제목을 입력하세요">
+          </div>
+          <div class="form-group">
+            <label for="post-category">카테고리</label>
+            <select class="form-control" id="post-category">
+              <option value="잡담">잡담</option>
+              <option value="여행지">여행지</option>
+              <option value="생활">생활</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="post-content">내용</label>
+            <textarea class="form-control" id="post-content" rows="5" placeholder="내용을 입력하세요"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="post-image">이미지 첨부</label>
+            <input type="file" class="form-control-file" id="post-image" accept="image/*">
+          </div>
+          <!-- 유튜브 링크 입력 설정 -->
+          <div class="form-group">
+            <label for="youtube-url">유튜브 URL (선택):</label>
+            <input type="text" class="form-control" id="youtube-url" placeholder="유튜브 주소를 입력하세요">
+          </div>
+          <button onclick="savePost();" class="btn btn-primary">작성완료</button>
+          <button onclick="showPostList();" type="button" class="btn btn-secondary">취소</button>
+        </form>
+
+        <!-- 게시물 디테일 설정 -->
+        <div id="post-view" class="post-view hidden"></div>
+      </div>
+    </div>
+
+    <script>
+  /* 초기화 및 전역 변수 설정 */
+  let currentPostIndex;
+  const savedPosts = [];
+  const postListElem = document.getElementById('post-list');
+  const postWriteForm = document.getElementById('post-write-form');
+  const postView = document.getElementById('post-view');
+
+  /* 폼 초기화 함수 */
+  function resetForm() {
+    document.getElementById('post-title').value = '';
+    document.getElementById('post-content').value = '';
+    document.getElementById('post-image').value = '';
+    document.getElementById('youtube-url').value = ''; // 추가
+  }
+
+  /* 작성화면 열기 함수 */
+  function showPostWrite() {
+    postListElem.classList.add('hidden');
+    postWriteForm.classList.remove('hidden');
+    postView.classList.add('hidden');
+  }
+
+  /* 리스트화면 열기 함수 */
+  function showPostList() {
+    postListElem.classList.remove('hidden');
+    postWriteForm.classList.add('hidden');
+    postView.classList.add('hidden');
+    resetForm();
+    renderPostList();
+    document.getElementById('writeButton').style.display = 'block';
+    document.getElementById('topPostsButton').style.display = 'block';
+    document.querySelector('.btn-group').classList.remove('hidden');
+  }
+
+  /* 디테일 화면 열기 함수 */
+  function showPostDetail(index) {
+    postListElem.classList.add('hidden');
+    postWriteForm.classList.add('hidden');
+    postView.classList.remove('hidden');
+    renderPostDetail(index);
+    document.getElementById("writeButton").style.display = "none";
+    document.getElementById("topPostsButton").style.display = "none";
+    document.querySelector('.btn-group').classList.add('hidden');
+    renderPostDetail(index);
+    document.getElementById('post-list').classList.add('hidden');
+  }
+
+  /* 작성 내용 저장 함수 */
+  function savePost() {
+    const title = document.getElementById('post-title').value;
+    const content = document.getElementById('post-content').value;
+    const file = document.getElementById('post-image').files[0];
+    const youtubeUrl = document.getElementById('youtube-url').value;
+    const category = document.getElementById('post-category').value;
+
+    /* 저장 */
+    savedPosts.push({
+      title,
+      content,
+      file,
+      youtubeUrl,
+      category,
+      upVotes: 0,
+      downVotes: 0,
+      comments: [],
+    });
+
+    showPostList();
+  }
+
+  /* 게시물 리스트 렌더 함수 */
+  function renderPostList(posts = savedPosts) {
+    postListElem.innerHTML = '';
+
+    posts.forEach((post, index) => {
+      postListElem.innerHTML += `
+          <li class="list-group-item" onclick="showPostDetail(${index})">
+              <span>${post.title}</span> - <span>${post.category}</span>
+          </li>`;
+    });
+  }
+
+  /* 게시물 디테일 렌더 함수 */
+  function renderPostDetail(index) {
+    currentPostIndex = index;
+    const post = savedPosts[index];
+    const reader = new FileReader();
+    const videoId = getYouTubeVideoId(post.youtubeUrl); // 추가
+
+    reader.onloadend = function () {
+      postView.innerHTML = `
+          <h2>${post.title}</h2>
+          ${post.file ? `<img src="${reader.result}" alt="" >` : ''}
+          <p>${post.content}</p>
+          ${post.youtubeUrl ? `<iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>` : ""}
+          <div class="mt-3">
+              <button id="upvote-count" onclick="upVote(currentPostIndex)" class="btn btn-link">&#128077; ${post.upVotes}</button>
+              <button id="downvote-count" onclick="downVote(currentPostIndex)" class="btn btn-link">&#128078; ${post.downVotes}</button>
+              <button onclick="showPostList()" class="btn btn-secondary">뒤로</button>
+          </div>
+          <div id="comments-section">
+              <h2>댓글 목록</h2>
+              <ul id="comments-list" class="comments-list"></ul>
+              <h5>댓글 작성</h5>
+              <form id="comment-form" onsubmit="addComment(); return false;">
+                  <input type="text" class="form-control" id="comment-text" placeholder="댓글을 입력하세요">
+                  <button id="comment-submit" class="btn btn-primary mt-2">댓글달기</button>
+              </form>
+          </div>`;
+      renderEmojiPicker();
+      renderComments();
+    };
+
+    if (post.file) {
+      reader.readAsDataURL(post.file);
+    } else {
+      reader.onloadend();
+    }
+
+    renderComments(); // 추가
+  }
+
+  
+
+  /* 댓글 작성 */
+  function addComment() {
+    const rawCommentText = $("#comment-text").val();
+    const commentText = rawCommentText.trim();
+    const commentAuthor = "사용자 닉네임"; // 사용자가 입력한 닉네임으로 변경해야 합니다.
+
+    if (commentText.length === 0) {
+      alert("댓글 내용을 입력하세요.");
+      return;
+    }
+
+    const commentTime = new Date().toLocaleString();
+    savedPosts[currentPostIndex].comments.push({
+      text: rawCommentText,
+      author: commentAuthor,
+      time: commentTime,
+    });
+    $("#comment-text").val("");
+    renderComments();
+  }
+
+  /* 이모티콘 버튼 클릭 이벤트 함수 */
+   function onEmojiButtonClick(event) {
+    event.preventDefault(); 
+    // event.stopImmediatePropagation();
+    toggleEmojiPicker();
+  }
+  document.addEventListener("click", () => {
+  const emojiPicker = document.getElementById("emoji-picker");
+  if (emojiPicker.style.display === "block") {
+    emojiPicker.style.display = "none";
+  }
+});
+
+  /* 이모티콘 선택창 렌더링 */
+  function renderEmojiPicker() {
+    const emojiPicker = document.createElement("div");
+    emojiPicker.id = "emoji-picker";
+    emojiPicker.className = "emoji-picker";
+    emojiPicker.innerHTML = `
+      <button onclick="insertEmoji('😊')">😊</button>
+      <button onclick="insertEmoji('😁')">😁</button>
+      <button onclick="insertEmoji('😂')">😂</button>
+      <button onclick="insertEmoji('😎')">😎</button>
+      <button onclick="insertEmoji('😢')">😢</button>`;
+    document.getElementById("comments-section").appendChild(emojiPicker);
+
+    const emojiButton = document.createElement("div");
+    emojiButton.className = "emoji-button";
+    emojiButton.innerHTML = `<button>이모티콘</button>`;
+    emojiButton.addEventListener("click", (event) => {
+  event.stopPropagation();
+  toggleEmojiPicker();
+});
+   
+    document.getElementById("comment-form").appendChild(emojiButton);
+  }
+
+  /* 이모티콘 선택창 토글 */
+  function toggleEmojiPicker() {
+    const emojiPicker = document.getElementById("emoji-picker");
+    if (emojiPicker.style.display === "none") {
+      emojiPicker.style.display = "block";
+    } else {
+      emojiPicker.style.display = "none";
+    }
+  }
+
+  /* 이모티콘 삽입 기능 구현 */
+  function insertEmoji(emoji) {
+    const commentInput = document.getElementById("comment-text");
+    commentInput.value += emoji;
+    toggleEmojiPicker();
+    commentInput.focus();
+  }
+
+  function renderComments() {
+  const commentsList = document.getElementById("comments-list");
+  const post = savedPosts[currentPostIndex];
+  commentsList.innerHTML = '';
+
+  post.comments.forEach((comment) => {
+    commentsList.innerHTML += `
+      <li>
+        <p class="comment-author">${comment.author}</p>
+        <p class="comment-text">${comment.text}</p>
+        <p class="comment-time">${comment.time}</p>
+      </li>`;
+  });
+}
+
+  /* 유튜브 URL에서 비디오 ID 가져오는 함수 추가 */
+  function getYouTubeVideoId(url) {
+    const regExp = /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+
+    return match && match[2].length === 11 ? match[2] : "-";
+  }
+
+  document.querySelector(".emoji-button > button").addEventListener("click", (event) => {
+  event.stopPropagation();
+  toggleEmojiPicker();
+});
+</script>
+
+  </body>
+</html>

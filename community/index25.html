@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>커뮤니티 게시판</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4">커뮤니티 게시판</h1>
+        <div>
+            <button onclick="showPostWrite();" class="btn btn-primary mb-4">글 작성하기</button>
+            <button onclick="showTopPosts();" class="btn btn-info mb-4">5추글 보기</button>
+
+            <ul id="post-list" class="post-list list-group">
+                <!-- 여기에 게시물 목록이 표시됩니다 -->
+            </ul>
+            <form id="post-write-form" class="post-write hidden" onsubmit="return false;">
+                <div class="form-group">
+                    <label for="post-title">제목</label>
+                    <input type="text" class="form-control" id="post-title" placeholder="제목을 입력하세요">
+                </div>
+                <div class="form-group">
+                    <label for="post-content">내용</label>
+                    <textarea class="form-control" id="post-content" rows="5" placeholder="내용을 입력하세요"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="post-image">이미지 첨부</label>
+                    <input type="file" class="form-control-file" id="post-image" accept="image/*">
+                </div>
+                <button onclick="savePost();" class="btn btn-primary">작성완료</button>
+                <button onclick="showPostList();" type="button" class="btn btn-secondary">취소</button>
+            </form>
+            <div id="post-view" class="post-view hidden">
+                <!-- 여기에 게시물 세부 정보가 표시됩니다 -->
+                <form id="post-edit-form" onsubmit="return false;">
+                    <div class="form-group">
+                        <label for="post-edit-title">제목</label>
+                        <input type="text" class="form-control" id="post-edit-title">
+                    </div>
+                    <div class="form-group">
+                        <label for="post-edit-content">내용</label>
+                        <textarea class="form-control" id="post-edit-content" rows="5"></textarea>
+                    </div>
+                    <button onclick="updatePost();" class="btn btn-primary">수정완료</button>
+                    <button onclick="cancelUpdate();" type="button" class="btn btn-secondary">취소</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentPostIndex;
+        const savedPosts = [];
+        const postListElem = document.getElementById('post-list');
+        const postWriteForm = document.getElementById('post-write-form');
+        const postView = document.getElementById('post-view');
+        const postEditForm = document.getElementById('post-edit-form');
+
+        function resetForm() {
+            document.getElementById('post-title').value = '';
+            document.getElementById('post-content').value = '';
+            document.getElementById('post-image').value = '';
+        }
+
+        function updatePost() {
+            const updatedTitle = document.getElementById('post-edit-title').value;
+            const updatedContent = document.getElementById('post-edit-content').value;
+
+            savedPosts[currentPostIndex].title = updatedTitle;
+            savedPosts[currentPostIndex].content = updatedContent;
+
+            showPostDetail(currentPostIndex);
+        }
+
+        function cancelUpdate() {
+            showPostDetail(currentPostIndex);
+        }
+
+        function showPostWrite() {
+            postListElem.classList.add('hidden');
+            postWriteForm.classList.remove('hidden');
+            postView.classList.add('hidden');
+        }
+
+        function showPostList() {
+            postListElem.classList.remove('hidden');
+            postWriteForm.classList.add('hidden');
+            postView.classList.add('hidden');
+            resetForm();
+            renderPostList();
+        }
+
+        function showPostDetail(index) {
+            postListElem.classList.add('hidden');
+            postWriteForm.classList.add('hidden');
+            postView.classList.remove('hidden');
+            renderPostDetail(index);
+        }
+
+        function savePost() {
+            const title = document.getElementById('post-title').value;
+            const content = document.getElementById('post-content').value;
+            const file = document.getElementById('post-image').files[0];
+
+            savedPosts.push({
+                title,
+                content,
+                file,
+                upVotes: 0,
+                downVotes: 0
+            });
+
+            showPostList();
+        }
+
+        function renderPostList() {
+            postListElem.innerHTML = '';
+
+            savedPosts.forEach((post, index) => {
+                postListElem.innerHTML += `
+                    <li class="list-group-item" onclick="showPostDetail(${index})">
+                        <span>${post.title}</span>
+                    </li>`;
+            });
+        }
+
+        function renderPostDetail(index) {
+            currentPostIndex = index;
+            const post = savedPosts[index];
+            document.getElementById('post-edit-title').value = post.title;
+            document.getElementById('post-edit-content').value = post.content;
+        }
+
+        renderPostList();
+    </script>
+</body>
+</html>

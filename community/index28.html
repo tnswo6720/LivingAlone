@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>커뮤니티 게시판</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="my-4">커뮤니티 게시판</h1>
+        <div>
+            <button onclick="showPostWrite();" class="btn btn-primary mb-4">글 작성하기</button>
+            <button onclick="showTopPosts();" class="btn btn-info mb-4">5추글 보기</button>
+
+            <ul id="post-list" class="post-list list-group"></ul>
+            <ul id="top-posts-list" class="post-list list-group hidden"></ul>
+            <form id="post-write-form" class="post-write hidden" onsubmit="return false;">
+                <input id="post-title" type="text" class="form-control mb-3" placeholder="제목을 입력하세요">
+                <textarea id="post-content" class="form-control mb-3" rows="5" placeholder="내용을 입력하세요"></textarea>
+                <button onclick="submitPost();" class="btn btn-primary">저장하기</button>
+                <button onclick="cancelPost();" class="btn btn-secondary">취소하기</button>
+            </form>
+
+            <div id="post-view" class="post-view hidden">
+                <h3 id="post-view-title" class="mt-3 mb-3"></h3>
+                <p id="post-view-content" class="mb-3"></p>
+                <button id="upvote" onclick="upvotePost(currentPostIndex)" class="btn btn-outline-primary mb-3">추천</button>
+                <button onclick="showPostList();" class="btn btn-info mb-3">목록으로 돌아가기</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const postListElem = document.getElementById('post-list');
+        const topPostsListElem = document.getElementById('top-posts-list');
+        const postWriteForm = document.getElementById('post-write-form');
+        const postView = document.getElementById('post-view');
+
+        let savedPosts = [];
+
+        function showPostWrite() {
+            postListElem.classList.add('hidden');
+            topPostsListElem.classList.add('hidden');
+            postWriteForm.classList.remove('hidden');
+            postView.classList.add('hidden');
+        }
+
+        function showTopPosts() {
+            postListElem.classList.add('hidden');
+            topPostsListElem.classList.remove('hidden');
+            postWriteForm.classList.add('hidden');
+            postView.classList.add('hidden');
+            renderTopPostsList();
+        }
+
+        function showPostList() {
+            postListElem.classList.remove('hidden');
+            topPostsListElem.classList.add('hidden');
+            postWriteForm.classList.add('hidden');
+            postView.classList.add('hidden');
+            resetForm();
+            renderPostList();
+        }
+
+        function submitPost() {
+            const postTitleElem = document.getElementById('post-title');
+            const postContentElem = document.getElementById('post-content');
+            const newPost = {
+                title: postTitleElem.value,
+                content: postContentElem.value,
+                upVotes: 0
+            };
+
+            savedPosts.push(newPost);
+            showPostList();
+        }
+
+        function cancelPost() {
+            showPostList();
+        }
+
+        function upvotePost(postIndex) {
+            savedPosts[postIndex].upVotes++;
+            renderPostDetail(postIndex);
+        }
+
+        let currentPostIndex;
+        function showPostDetail(postIndex) {
+            currentPostIndex = postIndex;
+            postListElem.classList.add('hidden');
+            topPostsListElem.classList.add('hidden');
+            postWriteForm.classList.add('hidden');
+            postView.classList.remove('hidden');
+            renderPostDetail(postIndex);
+        }
+
+        function renderPostDetail(postIndex) {
+            const postTitleView = document.getElementById('post-view-title');
+            const postContentView = document.getElementById('post-view-content');
+            const post = savedPosts[postIndex];
+
+            document.getElementById("upvote").textContent = `추천: ${post.upVotes}`;
+
+            postTitleView.textContent = post.title;
+            postContentView.textContent = post.content;
+        }
+
+        function renderPostList() {
+            postListElem.innerHTML = '';
+
+            savedPosts.forEach((post, index) => {
+                postListElem.innerHTML += `
+                    <li class="list-group-item" onclick="showPostDetail(${index})">
+                        <span>${post.title}</span>
+                    </li>`;
+            });
+        }
+
+        function renderTopPostsList() {
+            topPostsListElem.innerHTML = '';
+            savedPosts.filter(post => post.upVotes >= 5).forEach((post, index) => {
+                topPostsListElem.innerHTML += `
+                    <li class="list-group-item" onclick="showPostDetail(${index})">
+                        <span>${post.title}</span>
+                    </li>`;
+            });
+        }
+
+        function resetForm() {
+            document.getElementById('post-title').value = '';
+            document.getElementById('post-content').value = '';
+        }
+
+        renderPostList();
+    </script>
+</body>
+
+</html>

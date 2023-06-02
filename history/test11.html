@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>나혼자살래</title>
+    <link rel="stylesheet" href=test11.css>
+    
+    <script src="test2.js"></script>
+</head>
+<body>
+   <h1>나혼자살래</h1>
+<form class="search">
+  <input type="text" id="search-input" placeholder="검색어를 입력하세요" class="search__pink">
+  <button type="submit" class="search__pink">검색</button>
+</form>
+
+         
+   <nav class="menu">
+  <div class="menu__toggle">
+    <button class="menu__toggle-button">
+      <span class="menu__toggle-icon"></span>
+    </button>
+  </div>
+  <div class="menu__items">
+    <a href="#" class="menu__item">로그인</a>
+    <a href="#" class="menu__item">회원가입</a>
+    <a href="#" class="menu__item">고객센터</a>
+  </div>
+</nav>
+
+<div class="board">
+ 
+  <a href="#">생활정보</a>
+  <a href="#">사진공유 </a>
+  
+</div>
+
+
+
+<div class="buttons">
+  <a href="https://example.com" class="button">
+    <img src="images/life.jpg" alt="생활 컨텐츠" height="130px">
+    <span class="button__text">생활</span>
+  </a>
+  <a href="https://google.com" class="button">
+    <img src="images/travel.jpg" alt="여행지 컨텐츠"height="130px">
+    <span class="button__text">여행지</span>
+  </a>
+  
+</div>
+   
+   <div class="gif-wrapper">
+  <img class="gif" src="images/bt.gif" alt="gif 이미지" height="100px">
+</div>
+  
+  <div class="gif-wrapper1">
+  <img class="gif" src="images/bt.gif" alt="gif 이미지" height="100px">
+</div>
+   
+  <div class="hello">
+      <hr>
+   
+   <p class="copy">Copyright All Reserve by LivingAlone 2023</p>
+      
+  </div> 
+  
+<div class="chat-window">
+  <div class="chat-header">
+  </div>
+  <div class="chat-body" contenteditable>
+  </div>
+  <div class="chat-footer">
+    <div class="textarea-container">
+      <div class="textarea-wrapper">
+        <div class="textarea" contenteditable placeholder="메시지 입력"></div>
+      </div>
+    </div>
+    <button class="btn-send">전송</button>
+  </div>
+</div>
+
+
+
+
+   
+  <script>
+      const toggleButton = document.querySelector('.menu__toggle-button');
+      const menuItems = document.querySelector('.menu__items');
+      
+      
+
+      toggleButton.addEventListener('click', () => {
+         menuItems.classList.toggle('is-active');
+      });
+      
+      //
+      
+      const chatBody = document.querySelector('.chat-body');
+const messageInput = document.querySelector('.textarea');
+const sendButton = document.querySelector('.btn-send');
+
+sendButton.addEventListener('click', () => {
+  if (messageInput.textContent.trim() !== '') {
+    const message = document.createElement('div');
+    message.classList.add('message', 'sent');
+    const messageText = document.createElement('p');
+    messageText.textContent = messageInput.textContent;
+    message.appendChild(messageText);
+    chatBody.appendChild(message);
+    messageInput.textContent = '';
+    messageInput.style.height = 'auto';
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
+});
+
+messageInput.addEventListener('input', (event) => {
+  event.target.style.height = 'auto';
+  event.target.style.height = event.target.scrollHeight + 'px';
+});
+
+messageInput.addEventListener('keydown', (event) => {
+  if (event.keyCode === 13 && !event.shiftKey) {
+    event.preventDefault();
+    sendButton.click();
+  }
+});
+
+
+      
+  
+
+       
+       
+  
+   </script>
+</body>
+</html>

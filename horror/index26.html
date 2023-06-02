@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학교 괴담 게임</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #333;
+        }
+
+        .main-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            padding: 50px;
+            max-width: 800px;
+            width: 90%;
+        }
+
+        .narrative {
+            font-size: 18px;
+            text-align: justify;
+        }
+
+        .choice {
+            display: block;
+            background-color: #ccc;
+            border: 1px solid #999;
+            border-radius: 5px;
+            color: #333;
+            font-size: 16px;
+            padding: 10px;
+            text-align: center;
+            margin-bottom: 10px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .choice:hover {
+            background-color: #aaa;
+        }
+
+    </style>
+
+</head>
+<body>
+    <div class="main-container">
+        <div class="narrative" id="narrative">
+            게임을 시작합니다. 선택지를 클릭해 주세요.
+        </div>
+        <a href="#" class="choice" id="optionA" onclick="makeDecision('A')">선택지 A</a>
+        <a href="#" class="choice" id="optionB" onclick="makeDecision('B')">선택지 B</a>
+    </div>
+    <script>
+        const narrative = document.getElementById('narrative');
+        const optionA = document.getElementById('optionA');
+        const optionB = document.getElementById('optionB');
+        let currentStep = 0;
+
+        const script = [
+            {
+                narrative: '학교에 도착했습니다. 어디로 갈까요?',
+                optionA: { text: '교실로 이동하기', nextStep: 1 },
+                optionB: { text: '무서운 여자 화장실로 가기', nextStep: 2 },
+            },
+            {
+                narrative: '교실에 도착했습니다. 여자 화장실에서 이상한 소리가 들립니다. 어떻게 할까요?',
+                optionA: { text: '소리가 들리는 여자 화장실로 가기', nextStep: 3 },
+                optionB: { text: '무서워서 교실에 남기', nextStep: 4 },
+            },
+            {
+                narrative: '여자 화장실에 들어서자 불길한 느낌이 듭니다. 화장실 구석에서 슬픈 모습의 귀신이 나타났습니다.',
+                optionA: { text: '귀신의 사연을 들어주기', nextStep: 5 },
+                optionB: { text: '무서워서 교실로 돌아가기', nextStep: 4 },
+            },
+            {
+                narrative: '무서운 소리 소문이 퍼지며, 당신은 교실에서 전율하며 남습니다. 배드 엔딩입니다.',
+                optionA: { text: '게임 재시작', nextStep: 0 },
+                optionB: { text: '게임 종료', nextStep: -1 },
+            },
+            {
+                narrative: '귀신이 말합니다. "난 어릴 때 학교에서 외롭고 힘들었어. 다른 사람들의 놀림을 받이1고 속상해서 화장실에 숨어 울다가 사물조롱 사건으로 목숨을 잃게 되었지." 공감을 표현해주세요.',
+                optionA: { text: '귀신의 아픔을 이해하며 달래주기', nextStep: 6 },
+                optionB: { text: '마음이 좋지 않아 귀신에게 관심을 보이지 않기', nextStep: 7 },
+            },
+            {
+                narrative: '공감을 표현한 결과, 귀신이 좀 더 마음이 편안해졌습니다. 결국 귀신은 당신과의 이야기 끝에 영면할 수 있었습니다. 해피 엔딩입니다.',
+                optionA: { text: '게임 재시작', nextStep: 0 },
+                optionB: { text: '게임 종료', nextStep: -1 },
+            },
+            {
+                narrative: '귀신이 화가 낫습니다. "그래.. 나를 무시하다니..!" 이 말과 동시에, 귀신이 당신을 쥐어죽였습니다. 게임 오버입니다.',
+                optionA: { text: '게임 재시작', nextStep: 0 },
+                optionB: { text: '게임 종료', nextStep: -1 },
+            },
+        ];
+
+        function updateStory() {
+            if (currentStep === -1) {
+                window.location.reload();
+            } else {
+                narrative.textContent = script[currentStep].narrative;
+                optionA.textContent = script[currentStep].optionA.text;
+                optionB.textContent = script[currentStep].optionB.text;
+            }
+        }
+
+        function makeDecision(decision) {
+            currentStep = script[currentStep][`option${decision}`].nextStep;
+            updateStory();
+        }
+    </script>
+</body>
+</html>

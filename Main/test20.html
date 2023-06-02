@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>나혼자살래</title>
+    <link rel="stylesheet" href=test20.css>
+    
+    <script src="test2.js"></script>
+</head>
+<body>
+    <h1>나혼자살래</h1>
+   <div class="authentication-buttons">
+       <a href="../login/loing1.html" class="login-button">로그인</a>
+       <a href="signup.html" class="signup-button">회원가입</a>
+   </div>
+   <form class="search">
+        <input type="text" id="search-input" placeholder="검색어를 입력하세요" class="search__pink">
+        <button type="submit" class="search__pink">검색</button>
+    </form>
+
+         
+   <nav class="menu">
+  <div class="menu__toggle">
+    <button class="menu__toggle-button">
+      <span class="menu__toggle-icon"></span>
+    </button>
+  </div>
+  <div class="menu__items">
+    <a href="#" class="menu__item">로그인</a>
+    <a href="#" class="menu__item">회원가입</a>
+    <a href="#" class="menu__item">고객센터</a>
+  </div>
+</nav>
+
+
+
+
+<div class="board">
+ 
+  <a href="#">생활정보</a>
+  <a href="#">사진공유 </a>
+  
+</div>
+
+<button id="openModal">모달 열기</button>
+   
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <!-- 여기에 원하는 내용 추가 -->
+    
+<div class="buttons">
+    <a href="../life/test4.html" class="button">
+      <img src="images/catgirl.png" alt="생활 컨텐츠" height="130px">
+      <span class="button__text">생활</span>
+      <span class="tooltip">개인별 맞춤 생활 정보를 제공해드립니다</span>
+    </a>
+    <a href="../vocation/index.html" class="button">
+      <img src="images/travel2.png" alt="여행지 컨텐츠" height="130px">
+      <span class="button__text">여행지</span>
+      <span class="tooltip">나이 성별에 따른 여행지를 추천해드립니다</span>
+    </a>
+    
+    <a href="../Game/index.html" class="button">
+      <img src="images/game.png" alt="포인트 컨텐츠" height="130px">
+      <span class="button__text">포인트</span>
+      <span class="tooltip">포인트를 이용한 콘텐츠를 즐기실 수 있습니다</span>
+    </a>
+  
+    <a href="../Game/index.html" class="button">
+      <img src="images/horror.png" alt="공포" height="130px">
+      <span class="button__text">공포</span>
+      <span class="tooltip">공포 콘텐츠를 즐기실 수 있습니다.이용에 주의 바랍니다</span>
+    </a>
+  
+    <a href="../my-shop/index.html" class="button">
+      <img src="images/shop.png" alt="포인트 샵" height="130px">
+      <span class="button__text">포인트 샵</span>
+      <span class="tooltip">포인트 콘텐츠를 즐기실 수 있습니다.</span>
+    </a>
+  </div>
+    <span id="closeModal" class="close">&times;</span>
+  </div>
+</div>
+
+   
+   <div class="gif-wrapper">
+  <img class="gif" src="images/bt.gif" alt="gif 이미지" height="100px">
+</div>
+
+
+  
+ 
+   
+  <div class="hello">
+      <hr>
+   
+   <p class="copy">Copyright All Reserve by LivingAlone 2023</p>
+      
+  </div> 
+  
+<div class="chat-window">
+  <div class="chat-header"></div>
+  <div class="chat-body"></div>
+  <div class="chat-footer">
+    <div class="textarea-container">
+      <div class="textarea-wrapper">
+        <div class="textarea" contenteditable placeholder="메시지 입력"></div>
+      </div>
+    </div>
+    <button class="btn-send">전송</button>
+  </div>
+</div>
+
+
+
+
+   
+  <script>
+      const toggleButton = document.querySelector('.menu__toggle-button');
+      const menuItems = document.querySelector('.menu__items');
+      const buttons = document.querySelectorAll('.button');
+      
+      
+
+      toggleButton.addEventListener('click', () => {
+         menuItems.classList.toggle('is-active');
+      });
+      
+      
+      
+      const chatBody = document.querySelector('.chat-body');
+const messageInput = document.querySelector('.textarea');
+const sendButton = document.querySelector('.btn-send');
+
+sendButton.addEventListener('click', () => {
+  if (messageInput.textContent.trim() !== '') {
+    const message = document.createElement('div');
+    message.classList.add('message', 'sent');
+    const messageText = document.createElement('p');
+    messageText.textContent = messageInput.textContent;
+    message.appendChild(messageText);
+    chatBody.appendChild(message);
+    messageInput.textContent = '';
+    messageInput.style.height = 'auto';
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
+});
+
+messageInput.addEventListener('input', (event) => {
+  event.target.style.height = 'auto';
+  event.target.style.height = event.target.scrollHeight + 'px';
+});
+
+messageInput.addEventListener('keydown', (event) => {
+  if (event.keyCode === 13 && !event.shiftKey) {
+    event.preventDefault();
+    sendButton.click();
+  }
+});
+
+buttons.forEach((button) => {
+  const tooltip = button.querySelector('.tooltip');
+  const img = button.querySelector('img');
+  
+  button.addEventListener('mouseenter', () => {
+    tooltip.classList.add('is-active');
+    img.style.opacity = 0.7;
+  });
+  
+  button.addEventListener('mouseleave', () => {
+    tooltip.classList.remove('is-active');
+    img.style.opacity = 1;
+  });
+});
+      
+document.getElementById('openModal').addEventListener('click', function() {
+  document.getElementById('modal').style.display = 'block';
+});
+
+document.getElementById('closeModal').addEventListener('click', function() {
+  document.getElementById('modal').style.display = 'none';
+});
+
+       
+       
+  
+   </script>
+</body>
+</html>

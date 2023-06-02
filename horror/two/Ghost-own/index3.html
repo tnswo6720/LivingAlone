@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>학교 괴담: 원한 해결자 퍼즐</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      display: flex;
+      justify-content: center;
+    }
+    #game-canvas {
+      width: 90%;
+      height: 90%;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-canvas"></div>
+  <script>
+    const mainScene = {
+      preload: function() {
+          this.load.image('background', './image/womanghost.png');
+          this.load.image('letter', './image/womanghost.png');
+      },
+      create: function() {
+          this.add.image(this.game.config.width / 2, this.game.config.height / 2, 'background');
+
+          const targetWord = '원한';
+          this.currentWord = '';
+          this.completed = false;
+
+          const letters = ['함', '한', '원', '실'];
+
+          const yOffset = 50;
+
+          for (let i = 0; i < letters.length; i++) {
+              const letterText = this.add.text(200 + i * 100, 300 + yOffset, letters[i], {
+                  fontSize: '32px',
+                  fill: '#000',
+                  backgroundColor: '#fff',
+                  padding: { x: 10, y: 5 }
+              }).setOrigin(0.5);
+
+              letterText.setInteractive();
+
+              letterText.on('pointerdown', () => {
+                  this.updateWord(letters[i]);
+              });
+          }
+
+          this.wordText = this.add.text(400, 500 + yOffset, '', {
+              fontSize: '32px',
+              fill: '#000'
+          }).setOrigin(0.5);
+
+          this.statusText = this.add.text(400, 40, '원한을 찾아주세요!', {
+              fontSize: '24px',
+              fill: '#fff'
+          }).setOrigin(0.5);;
+      },
+      update: function() {
+      },
+      updateWord: function(letter) {
+          if (this.completed) return;
+          this.currentWord += letter;
+
+          if (this.currentWord === '원한') {
+              this.statusText.setText('원한이 풀렸습니다!');
+              this.completed = true;
+          } else {
+              this.statusText.setText('원한을 찾아주세요!');
+          }
+
+          this.wordText.setText(this.currentWord);
+
+          if (this.currentWord.length >= 2) {
+              this.currentWord = '';
+          }
+      }
+    };
+
+    const config = {
+      type: Phaser.AUTO,
+      width: 1000,
+      height: 800,
+      scene: mainScene,
+      parent: 'game-canvas'
+    };
+
+    const game = new Phaser.Game(config);
+  </script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+
+* {
+ 
+  box-sizing: border-box;
+}
+
+
+  /* 헤더 스타일*/
+    
+
+  h1 {
+    color: #FFC0CB;
+    text-shadow: 2px 2px 4px #FF1493;
+    font-size: 35px; /* 예시 값, 필요에 따라 조절해주세요 */
+  }
+
+  .copy {
+      text-align: center;
+      text-transform: capitalize;
+  }
+  
+  
+  .menu {
+    display: none;
+    float: left;
+    height: 0.5px;
+    background-color: #f9d6e8;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px;
+    position: absolute;
+    font-weight:300;
+  }
+  
+  
+  .menu__toggle {
+    
+    display: none;
+    align-items: center;
+  }
+  
+  .menu__toggle-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    height: 150px;
+    position: relative;
+    width: 50px;
+  }
+  
+  .menu__toggle-icon,
+  .menu__toggle-icon::before,
+  .menu__toggle-icon::after {
+    background-color:#fff;
+    content: "";
+    display: block;
+    height: 3px;
+    position: absolute;
+    width: 100%;
+  }
+  
+  .menu__toggle-icon::before {
+    top: -6px;
+  }
+  
+  .menu__toggle-icon::after {
+    bottom: -6px;
+  }
+  
+  .menu__items {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #f9d6e8;
+    padding: 10px;
+    z-index: 1;
+       
+  }
+  
+  .menu__items.is-active {
+    display: flex;
+  }
+  
+  .menu__item {
+    color: snow;
+    margin-bottom: 10px;
+    text-decoration: none; 
+    display: block;
+    white-space: nowrap;
+    font-weight: bold;    
+  }
+
+  
+  .board {
+    background-color: #f9d6e8;
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 10px;
+      
+    
+  }
+  
+  .board a {
+    color: white;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  
+  /* 로그인과 회원가입 */
+  .authentication-buttons {
+    position: absolute;
+    top: 10px; /* 위치 조정 */
+    right: 0;
+  }
+  
+  .login-button, .signup-button {
+    display: inline-block;
+    color: white;
+    background-color: #f9d6e8;
+    padding: 10px;
+    border: none;
+    text-decoration: none;
+    border-radius: 20px;
+    
+  }
+
+  /* 검색어 CSS */
+  .search {
+    position: absolute;
+    top: 50px; /* nav.menu의 높이만큼 여백 추가 */
+    right: 0;
+  }
+  
+  .search__pink {
+    background-color: #f9d6e8;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.486);
+  }
+  /* 헤더 스타일 끝 */
+
+
+.container {
+  width: 100%;
+  height: 800px;
+  padding: 50px 0px 0px 0px;
+  
+  background-image: white;
+  background-image: url(./img/vocationman.png), url(./img/vocationwoman.png);
+  background-repeat: no-repeat, no-repeat;
+  background-size: 20% auto, 20% auto;
+  background-position: top 300px left 1000px, top 300px left 300px;
+}
+
+
+
+
+#weather-widget {
+    position: absolute; /* 요소를 절대 위치로 지정합니다. */
+    bottom: 0; /* 요소의 아래쪽을 화면 하단과 맞춥니다. */
+  left: 0; /* 요소를 화면 가운데로 이동시킵니다. */
+  transform: translateX(0); /* 요소를 수평으로 중앙에 맞춥니다. */
+    background-image: url('./img/cloud.png');
+    background-size: cover;
+    background-position: center;
+    padding: 5px;
+    border-radius: 5px;
+    width: 80px;
+    margin: 0 auto;
+    text-align: center;
+
+  }
+  
+  h2 {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  
+  p {
+    font-size: 9px;
+    margin: 5px 0;
+  }
+  
+  #temperature {
+    font-weight: bold;
+    color: #0008f7;
+    font-size: 15px;
+  }
+  
+  #description {
+    font-style: italic;
+    color: #00a2ed;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  
+  /* 여행지 리스트 */
+
+  .travel_list {
+    width: 100%;
+    height: 500px;
+    position: relative;
+    /* 원하는 위치 및 모양에 따라 여기에 스타일을 추가하세요 */
+  }

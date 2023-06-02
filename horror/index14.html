@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>맥도날드 레시피 스틸러</title>
+  <style>
+    /* 기존 스타일에 변경된 내용이 없습니다. */
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #333;
+    }
+.main-container {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  padding: 50px;
+  max-width: 800px;
+  width: 90%;
+}
+
+.background {
+  position: relative;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  padding: 20px;
+  background-size: cover;
+  background-position: center;
+}
+
+.narrative {
+  font-size: 18px;
+  text-align: justify;
+}
+
+.choice {
+  display: block;
+  background-color: #ccc;
+  border: 1px solid #999;
+  border-radius: 5px;
+  color: #333;
+  font-size: 16px;
+  padding: 10px;
+  text-align: center;
+  margin-bottom: 10px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.choice:hover {
+  background-color: #aaa;
+}
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <div id="background" class="background">
+      <div class="narrative" id="narrative">
+        게임을 시작합니다. 선택지를 클릭해 주세요.
+      </div>
+      <button class="choice" id="optionA" onclick="makeDecision('A')">선택지 A</button>
+      <button class="choice" id="optionB" onclick="makeDecision('B')">선택지 B</button>
+      <button class="choice" id="optionC" onclick="makeDecision('C')">선택지 C</button>
+      <img id="ronaldDuckImg" src="./image/horrormac.jpg" style="display: none;" alt="Ronald Duck" height="200px" width="500px">
+    </div>
+  </div>
+  <script>
+    const narrative = document.getElementById('narrative');
+    const optionA = document.getElementById('optionA');
+    const optionB = document.getElementById('optionB');
+    const optionC = document.getElementById('optionC');
+    const background = document.getElementById('background');
+    let currentStep = 0;
+    const script = [
+  {
+    narrative: '맥도날드에서 레시피를 훔치기 위해 침투합니다. 어떤 출입구로 들어갈까요?',
+    optionA: { text: '정문으로 들어가기', nextStep: 1 },
+    optionB: { text: '후문으로 들어가기', nextStep: 2 },
+    optionC: { text: '창문으로 들어가기', nextStep: -1 },
+  },
+  {
+    narrative: '정문으로 들어가려 하는 순간, 경비원이 나타납니다. 어떻게 할까요?',
+    optionA: { text: '경비원과 이야기하기', nextStep: 3 },
+    optionB: { text: '경비원을 회피하고 후문으로 가기', nextStep: 2 },
+    optionC: { text: '포기하고 돌아가기', nextStep: -1 },
+  },
+  {
+    narrative: '후문으로 들어와 레시피가 숨겨진 것으로 추정되는 사무실을 찾았습니다. 어떻게 할까요?',
+    optionA: { text: '사무실에 들어가기', nextStep: 4 },
+    optionB: { text: '사무실 주변을 조사하기', nextStep: 5 },
+    optionC: { text: '포기하고 돌아가기', nextStep: -1 },
+  },
+  {
+    narrative: '경비원과 대화한 결과, 그는 이 길 주변 사람의 도움이 필요한 것으로 밝혀졌습니다. 도움을 청한 대가로 그는 비밀 레시피에 대한 정보를 전해줍니다.',
+    optionA: { text: '레시피에 대한 정보 받기', nextStep: 5 },
+    optionB: { text: '도움을 청할 수 없어 후문으로 가기', nextStep: 2 },
+    optionC: { text: '포기하고 돌아가기', nextStep: -1 },
+  },
+  {
+    narrative: '사무실 안에서 레시피를 찾았습니다. 이제 어떻게 할까요?',
+    optionA: { text: '레시피가 담긴 문서를 훔치기', nextStep: 6 },
+    optionB: { text: '정신 차리고 포기하고 돌아가기', nextStep: -1 },
+    optionC: { text: '주변을 더 조사하기', nextStep: -1 },
+  },
+  {
+    narrative: '레시피를 훔쳤습니다! 이제 무사히 나가야 합니다. 어떤 출입구로 나갈까요?',
+    optionA: { text: '정문으로 나가기', nextStep: 7 },
+    optionB: { text: '후문으로 나가기', nextStep: 8 },
+    optionC: { text: '창문으로 나가기', nextStep: -1 },
+  },
+//   
+{
+    narrative: '레시피를 훔친 도둑을 쫓아오는 로날드 덕을 발견했습니다! 정문으로 빠져나갈 수 있을까요?',
+    optionA: { text: '빠르게 도망치기', nextStep: 9 },
+    optionB: { text: '다른 출입구로 가보기', nextStep: 8 },
+    optionC: { text: '포기하고 도둑질을 실패하고 돌아가기', nextStep: -1 },
+  },
+  {
+    narrative: '로날드 덕의 달리기 속도가 너무 빠릅니다.',
+    optionA: { text: '로날드 덕에게 교섭을 요청합니다', nextStep: -1 },
+    optionB: { text: '로날드 덕과 맞서 싸웁니다', nextStep: -1 },
+    optionC: { text: '빠르게 후문을 향해 도망갑니다', nextStep: 10 },
+  },
+  {
+    narrative: '무사히 후문을 통해 나올 수 있었습니다! 길을 따라 점점 멀어져, 로날드 덕의 흔적을 따라오지 않았습니다.',
+    optionA: { text: '미션 완료! 도둑질에 성공했습니다.', nextStep: -1 },
+    optionB: { text: '', nextStep: -1 },
+    optionC: { text: '', nextStep: -1 },
+  },
+  {
+    narrative: '빠르게 도망쳐 로날드 덕을 따돌릴 수 있었습니다. 이제 안전하게 귀가할 수 있습니다.',
+    optionA: { text: '미션 완료! 도둑질에 성공했습니다.', nextStep: -1 },
+    optionB: { text: '', nextStep: -1 },
+    optionC: { text: '', nextStep: -1 },
+  }
+
+];
+
+function updateStory() {
+  if (currentStep === -1) {
+    narrative.style.display = "none";
+    optionA.style.display = "none";
+    optionB.style.display = "none";
+    optionC.style.display = "none";
+    ronaldDuckImg.style.display = "block";
+  } else {
+    narrative.textContent = script[currentStep].narrative;
+    optionA.textContent = script[currentStep].optionA.text;
+    optionB.textContent = script[currentStep].optionB.text;
+    optionC.textContent = script[currentStep].optionC.text;
+  }
+}
+
+
+function makeDecision(decision) {
+  if (decision === 'A') {
+    currentStep = script[currentStep].optionA.nextStep;
+  } else if (decision === 'B') {
+    currentStep = script[currentStep].optionB.nextStep;
+  } else if (decision === 'C') {
+    currentStep = script[currentStep].optionC.nextStep;
+  }
+  updateStory();
+}
+
+updateStory();
+
+  </script>
+</body>
+</html>
+

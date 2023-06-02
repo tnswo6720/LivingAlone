@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>커뮤니티 게시판</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4">커뮤니티 게시판</h1>
+        <div>
+            <button onclick="showPostWrite();" class="btn btn-primary mb-4">글 작성하기</button>
+            <button onclick="showTopPosts();" class="btn btn-info mb-4">추천글 보기</button>
+
+            <ul id="post-list" class="post-list list-group">
+                <!-- 게시물 목록이 여기에 표시됩니다 -->
+            </ul>
+            <form id="post-write-form" class="post-write hidden" onsubmit="return false;">
+                <div class="form-group">
+                    <label for="post-title">제목</label>
+                    <input type="text" class="form-control" id="post-title" placeholder="제목을 입력하세요">
+                </div>
+                <div class="form-group">
+                    <label for="author">작성자</label>
+                    <input type="text" class="form-control" id="author" placeholder="작성자를 입력하세요">
+                </div>
+                <div class="form-group">
+                    <label for="post-content">내용</label>
+                    <textarea class="form-control" id="post-content"></textarea>
+                </div>
+                <button onclick="submitPost();" class="btn btn-primary">게시글 등록</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        let post_list = [];
+        const stored_posts = localStorage.getItem("posts");
+        if (stored_posts) {
+            post_list = JSON.parse(stored_posts);
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+          displayPostList();
+        });
+
+        function showPostWrite() {
+          const writeForm = document.getElementById("post-write-form");
+          writeForm.classList.toggle("hidden");
+        }
+
+        function displayPostList() {
+          const postListElement = document.getElementById("post-list");
+          postListElement.innerHTML = post_list.map(function (post, index) {
+            return `
+              <li class="list-group-item" onclick="viewPostDetail(${index});">
+                <h5>${post.title}</h5>
+                <p>${post.author}</p>
+              </li>
+            `;
+          }).join('');
+        }
+
+        function getFieldData(fieldId) {
+          const field = document.getElementById(fieldId);
+
+          return field.value;
+        }
+
+        function submitPost() {
+          const title = getFieldData("post-title");
+          const author = getFieldData("author");
+          const content = getFieldData("post-content");
+
+          if (!title || !author || !content) {
+            alert("제목, 작성자, 내용 모두 입력해주세요.");
+            return;
+          }
+
+          post_list.push({ title, author, content });
+          localStorage.setItem("posts", JSON.stringify(post_list));
+
+          alert("게시물이 성공적으로 등록되었습니다.");
+ 
+          document.getElementById("post-write-form").reset();
+          document.getElementById("post-write-form").classList.add("hidden");
+          displayPostList();
+        }
+
+        function viewPostDetail(index) {
+          const post = post_list[index];
+
+          alert(`
+            제목: ${post.title}
+            작성자: ${post.author}
+            내용: ${post.content}
+          `);
+        }
+
+    </script>
+</body>
+</html>

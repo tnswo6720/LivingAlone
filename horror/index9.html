@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>학교 괴담 게임</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: black;
+      color: white;
+      text-align: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    button {
+      background-color: #ccc;
+      border: 1px solid #999;
+      border-radius: 5px;
+      color: #333;
+      font-size: 16px;
+      padding: 10px;
+      text-align: center;
+      margin-bottom: 10px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    button:hover {
+      background-color: #aaa;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>학교 괴담 게임</h1>
+  <p id="narrative"></p>
+  <button onclick="makeDecision('A')" id="optionA"></button>
+  <button onclick="makeDecision('B')" id="optionB"></button>
+  <button onclick="makeDecision('C')" id="optionC"></button>
+  
+  <script>
+    const narrative = document.getElementById('narrative');
+    const optionA = document.getElementById('optionA');
+    const optionB = document.getElementById('optionB');
+    const optionC = document.getElementById('optionC');
+
+    let currentStep = 0;
+
+    const script = [
+      {
+        narrative: '밤 늦은 학교에 도착했습니다. 갑자기 이상한 소리가 들립니다. 어디로 갈까요?',
+        optionA: { text: '오래된 교실로 가기', nextStep: 1 },
+        optionB: { text: '아무렇지 않게 보이는 복도로 가기', nextStep: 2 },
+        optionC: { text: '숨겨진 지하실로 가기', nextStep: 3 },
+      },
+      {
+        narrative: '오래된 교실로 들어갑니다. 고통 받고 있는 귀신이 나타납니다. 어떻게 행동할까요?',
+        optionA: { text: '귀신에게 무슨일인지 묻기', nextStep: 4 },
+        optionB: { text: '낡은 일기장을 찾아보기', nextStep: 5 },
+        optionC: { text: '밖으로 도망가기', nextStep: 0 },
+      },
+      {
+        narrative: '복도로 가게 되었습니다. 어두운 각종의 후문이 열려있습니다. 어떡할까요?',
+        optionA: { text: '후문 쪽으로 점점 다가가보기', nextStep: 6 },
+        optionB: { text: '그대로 있고 싶다', nextStep: 0 },
+        optionC: { text: '교실로 되돌아가기', nextStep: 1 },
+      },
+      {
+        narrative: '지하실로 내려갑니다. 마주한 작은 방에는 비밀 연구실이 있습니다. 여기에서 무엇을 찾으실 건가요?',
+        optionA: { text: '연구 기록을 살펴보기', nextStep: 7 },
+        optionB: { text: '연구실 밖으로 벗어나지 않은 섬뜩한 그림자를 살펴보기', nextStep: 8 },
+        optionC: { text: '지하실 탈출 방법 찾기', nextStep: 9 },
+      },
+      // ... 추가로 작성한 script 내용
+    ];
+
+    function makeDecision(letter) {
+      currentStep = script[currentStep]['option' + letter].nextStep;
+      if (currentStep === -1) {
+        window.location.reload();
+      } else {
+        showStep();
+      }
+    }
+
+    function showStep() {
+      narrative.textContent = script[currentStep].narrative;
+      optionA.textContent = script[currentStep].optionA.text;
+      optionB.textContent = script[currentStep].optionB.text;
+      optionC.textContent = script[currentStep].optionC.text;
+    }
+
+    showStep();
+  </script>
+</body>
+
+</html>

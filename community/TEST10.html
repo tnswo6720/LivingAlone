@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>커뮤니티 게시판</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: #faf9f9;
+            margin: 0;
+        }
+
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f9d6e8;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        h1 {
+            color: #FFC0CB;
+            text-shadow: 2px 2px 4px #FF1493;
+            font-size: 35px;
+            margin: 10px 0;
+        }
+
+        .menu {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            padding: 1.5rem 0;
+            width: 100%;
+            list-style-type: none;
+            margin-bottom: 0;
+        }
+
+        .menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+        }
+
+        .menu a:hover {
+            opacity: 0.7;
+        }
+
+        .authentication-buttons {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+        }
+
+        .login-button, .signup-button {
+            background-color: #f9d6e8;
+            padding: 10px;
+            text-decoration: none;
+            color: white;
+            border: none;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .login-button:hover, .signup-button:hover {
+           opacity: 0.7;
+        }
+
+        main {
+            flex-grow: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .posts-section {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .post {
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .post h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .post p {
+            line-height: 1.5;
+        }
+
+        .post-category {
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .action-buttons button {
+            background-color: #f9d6e8;
+            color: white;
+            font-weight: bold;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .action-buttons button:hover {
+            opacity: 0.7;
+        }
+
+        footer {
+            background-color: #f9d6e8;
+            padding: 1rem;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        footer span {
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>나혼자살래</h1>
+    <nav>
+        <ul class="menu">
+            <li><a href="#">생활정보</a></li>
+            <li><a href="#">사진공유</a></li>
+        </ul>
+    </nav>
+    <div class="authentication-buttons">
+        <a href="#" class="login-button">로그인</a>
+        <a href="#" class="signup-button">회원가입</a>
+    </div>
+</header>
+<main>
+    <div class="container">
+        <div class="posts-section">
+            <div class="post">
+                <div class="post-category">레시피</div>
+                <h3>오렌지 주스 만들기</h3>
+                <p>여기에 레시피가 있습니다.</p>
+                <div class="action-buttons">
+                    <button type="button">수정하기</button>
+                    <button type="button">삭제하기</button>
+                </div>
+            </div>
+            <div class="post">
+                <div class="post-category">여행지 추천</div>
+                <h3>제주도 에메랄드바다</h3>
+                <p>제주도에 에메랄드바다가 멋있습니다.</p>
+                <div class="action-buttons">
+                    <button type="button">수정하기</button>
+                    <button type="button">삭제하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer>
+    <span>나혼자살래 © 2023. All Rights Reserved.</span>
+</footer>
+</body>
+</html>

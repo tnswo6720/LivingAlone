@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>처녀귀신의 저주</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #333;
+        }
+
+        .main-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            padding: 50px;
+            max-width: 800px;
+            width: 90%;
+        }
+
+        .background {
+            position: relative;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .narrative {
+            font-size: 18px;
+            text-align: justify;
+        }
+
+        .choice {
+            display: block;
+            background-color: #ccc;
+            border: 1px solid #999;
+            border-radius: 5px;
+            color: #333;
+            font-size: 16px;
+            padding: 10px;
+            text-align: center;
+            margin-bottom: 10px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .choice:hover {
+            background-color: #aaa;
+        }
+
+        .ghostImage {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <div id="background" class="background">
+            <img src="./image/Ghost.png" alt="귀신 이미지" id="ghostImage" class="ghostImage" />
+            <div class="narrative" id="narrative">
+                게임을 시작합니다. 선택지를 클릭해 주세요.
+            </div>
+            <button class="choice" id="optionA" onclick="makeDecision('A')">선택지 A</button>
+            <button class="choice" id="optionB" onclick="makeDecision('B')">선택지 B</button>
+        </div>
+    </div>
+    <script>
+        const narrative = document.getElementById('narrative');
+        const optionA = document.getElementById('optionA');
+        const optionB = document.getElementById('optionB');
+        const background = document.getElementById('background');
+        const ghostImage = document.getElementById('ghostImage');
+        let currentStep = 0;
+
+        const script = [
+            {
+                narrative: '당신은 학교의 농장의 수수밭에서 버려진 저택을 발견합니다. 괴담으로 유명한 그 저택 앞에 서서, 어떻게 할지 생각해봅니다.',
+                optionA: { text: '저택에 들어가기', nextStep: 1 },
+                optionB: { text: '다시 학교로 돌아가기', nextStep: null },
+            },
+            {
+                narrative: '저택의 문을 힘겹게 열고 들어갔습니다. 희미한 달빛이 어두운 통로를 아슬아슬하게 비춥니다. 어디로 갈까요?',
+                optionA: { text: '왼쪽으로 가기', nextStep: 2 },
+                optionB: { text: '오른쪽으로 가기', nextStep: 3 },
+            },
+            {
+                narrative: '미끄러운 통로를 따라 왼쪽으로 꺾었습니다. 한참을 걸은 후에 오래된 문을 하나 발견했습니다. 문을 열까요?',
+                optionA: { text: '문을 열어보기', nextStep: 4 },
+                optionB: { text: '뒤로 돌아가기', nextStep: 1 },
+            },
+            {
+                narrative: '통로를 따라 오른쪽으로 꺾었습니다. 얼마 지나지 않아 벽장을 발견했습니다. 벽장을 열까요?',
+                optionA: { text: '벽장을 열어보기', nextStep: 5 },
+                optionB: { text: '뒤로 돌아가기', nextStep: 1 },
+            },
+            {
+                narrative: '문을 열자 눈앞에 아름다운 정원이 펼쳐졌습니다. 그러나, 그 아름다움에 걸맞지 않게 공기에는 기운을 빼앗길 듯한 음산함이 감돈다. 정원에서 반짝이는 빛에 이끌려 가볼까요?',
+                optionA: { text: '빛을 따라 가기', nextStep: 6 },
+                optionB: { text: '정원을 떠나기', nextStep: 7 },
+            },
+            {
+                narrative: '눈을 의심할 만큼 놀라운 모습이 마주했습니다. 고요한 정원의 한쪽 구석에 원거리를 바라보며 서 있는 처녀 귀신. 그 찰나, 그녀가 급격이 돌아섰다. 이 순간을 계기로 하여 스토리의 공포스러운 결말을 맞이하게 됩니다. 게임을 부디 마무리하십시오.',
+                optionA: { text: '다시 시작하기', nextStep: 0 },
+                optionB: { text: '', nextStep: null },
+            },
+            {
+                narrative: '벽장을 열자 짙푸른 청명한 고프된 호수가 왠지 있어어보이지 않은가! 호수에는 뿌연 안개가 가득하였다. 호수의 가운데 쪽으로 배가 떠 있는 것을 발견했습니다. 그 배를 타러 가볼까요?',
+                optionA: { text: '배를 타러 가기', nextStep: 8 },
+                optionB: { text: '호수를 떠나기', nextStep: 9 },
+            },
+            {
+                narrative: '급히 뒤로 돌아갑니다. 저택의 문을 나와 길게 숨을 돌리는데, 자신감이 다시 생겼습니다. 호기롭게 다시 저택 안으로 들어갑니다.',
+                optionA: { text: '저택에 다시 들어가기', nextStep: 1 },
+                optionB: { text: '', nextStep: null },
+            },
+            {
+                narrative: '선택한 선택지들을 바탕으로, 당신은 저택에 숨겨진 비밀들을 발견하면서 귀신의 이야기를 조금씩 들어낸다. 결국 처녀귀신의 저주를 푸는 방법을 찾게 됩니다.',
+                optionA: { text: '처녀귀신의 저주를 풀어주기', nextStep: 10 },
+                optionB: { text: '뒤로 돌아가기', nextStep: 1 },
+            },
+            {
+                narrative: '당신은 처녀귀신의 저주를 풀어주었고, 저택에 와서 고통 받던 무수한 영혼들도 구해준다. 저택은 이제 평온해지고, 수수밭에서도 다시 삶이 시작되었습니다.',
+                optionA: { text: '다시 시작하기', nextStep: 0 },
+                optionB: { text: '', nextStep: null },
+            }
+        ];
+
+        function makeDecision(letter) {
+            currentStep = script[currentStep]['option' + letter].nextStep;
+            if (currentStep === null) {
+                endGame();
+            } else {
+                showStep();
+            }
+        }
+
+        function showStep() {
+            narrative.textContent = script[currentStep].narrative;
+            optionA.textContent = script[currentStep].optionA.text;
+            optionB.textContent = script[currentStep].optionB.text;
+            if (script[currentStep].optionB.text === '') {
+                optionB.style.display = 'none';
+            } else {
+                optionB.style.display = 'block';
+            }
+        }
+
+        function endGame() {
+            narrative.textContent = "'게임이 종료되었습니다. 고마워요!";
+            optionA.style.display = 'none';
+            optionB.style.display = 'none';
+        }
+
+        showStep();
+    </script>

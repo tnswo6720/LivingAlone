@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>여행지 목록</title>
+  <meta charset="UTF-8">
+  <style>
+    *{
+      box-sizing: border-box;
+    }
+
+    h1 {
+      text-align: center;
+      color: #f9d6e8;
+    }
+
+    .slideshow-container {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      margin: auto;
+      overflow: hidden;
+    }
+
+    .slide {
+      display: none;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .slide-image {
+      width: 100%;
+      height: auto;
+    }
+
+    .slide-info {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      color: white;
+      font-size: 14px;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+    }
+
+    .slide-info h2,
+    .slide-info p {
+      margin: 5px 0;
+    }
+
+    .prev,
+    .next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 24px;
+      color: white;
+      cursor: pointer;
+      padding: 10px;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .prev {
+      left: 10px;
+    }
+
+    .next {
+      right: 10px;
+    }
+  </style>
+</head>
+<body>
+<h1>여행지 목록</h1>
+<div class="slideshow-container">
+  <!-- 여행지 데이터를 반복문으로 출력 -->
+  <th:block th:each="spot, status : ${travelSpots}">
+    <div class="slide" th:classappend="${status.index == 0} ? 'active'">
+      <img class="slide-image" th:src="${spot.image_url}">
+      <div class="slide-info">
+        <h2 th:text="${spot.name}"></h2>
+        <p th:text="${spot.description}"></p>
+        <p th:text="${spot.location}"></p>
+      </div>
+    </div>
+  </th:block>
+  <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
+  <a class="next" onclick="changeSlide(1)">&#10095;</a>
+</div>
+
+<script>
+  var slides = document.querySelectorAll('.slide');
+  var currentSlide = 0;
+
+  slides[currentSlide].style.display = 'block';
+
+  function showSlide(n) {
+    slides[currentSlide].style.display = 'none';
+    currentSlide = (currentSlide + n + slides.length) % slides.length;
+    slides[currentSlide].style.display = 'block';
+  }
+
+  function changeSlide(n) {
+    showSlide(n);
+  }
+
+  document.addEventListener('keydown', function(event) {
+    if (event.keyCode === 37) {
+      changeSlide(-1); // 왼쪽 화살표
+    } else if (event.keyCode === 39) {
+      changeSlide(1); // 오른쪽 화살표
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>커뮤니티 게시판</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .content {
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="content">
+        <!-- 글 목록 -->
+        <div id="post-list"></div>
+
+        <!-- 글 상세 보기 -->
+        <div id="post-view" style="display: none;"></div>
+
+        <!-- 글 작성 폼 -->
+        <form id="post-write-form" onsubmit="return false;" style="display: none;">
+            <div class="form-group">
+                <label for="post-title">제목</label>
+                <input type="text" class="form-control" id="post-title">
+            </div>
+            <div class="form-group">
+                <label for="post-content">내용</label>
+                <textarea class="form-control" id="post-content" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="post-image">이미지</label>
+                <input type="file" class="form-control-file" id="post-image">
+            </div>
+            <button onclick="savePost();" class="btn btn-primary">저장</button>
+            <button onclick="showPostList();" class="btn btn-secondary">목록으로</button>
+        </form>
+
+        <div class="mt-3">
+            <button onclick="showPostWriteForm();" class="btn btn-primary">글 작성</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const postList = document.getElementById("post-list");
+    const postView = document.getElementById("post-view");
+    const postWriteForm = document.getElementById("post-write-form");
+    const savedPosts = [];
+
+    function showPostList() {
+        renderPosts();
+        postList.style.display = "block";
+        postView.style.display = "none";
+        postWriteForm.style.display = "none";
+    }
+
+    function showPostWriteForm() {
+        resetForm();
+        postList.style.display = "none";
+        postView.style.display = "none";
+        postWriteForm.style.display = "block";
+    }
+
+    function savePost() {
+        const title = document.getElementById("post-title").value;
+        const content = document.getElementById("post-content").value;
+        const image = document.getElementById("post-image").files[0];
+        const reader = new FileReader();
+        if (image) {
+            reader.readAsDataURL(image);
+            reader.onload = () => {
+                const imgDataUrl = reader.result;
+                savedPosts.push({ title, content, imgDataUrl });
+                resetForm();
+                showPostList();
+            };
+        } else {
+            savedPosts.push({ title, content });
+            resetForm();
+            showPostList();
+        }
+    }
+
+    function resetForm() {
+        document.getElementById("post-title").value = "";
+        document.getElementById("post-content").value = "";
+        document.getElementById("post-image").value = "";
+    }
+
+    function renderPosts() {
+        postList.innerHTML = "";
+        savedPosts.forEach((post, index) => {
+            const postListItem = document.createElement("div");
+            postListItem.classList.add("post-list-item");
+            postListItem.innerHTML = `
+                <h5>${post.title}</h5>
+                <p>${post.content}</p>
+            `;
+            postListItem.addEventListener("click", () => showPostDetail(post));
+            postList.appendChild(postListItem);
+        });
+    }
+
+    function showPostDetail(post) {
+        const postDetailHTML = `
+            <h5>${post.title}</h5>
+            <p>${post.content}</p>
+            ${post.imgDataUrl ? `<img src="${post.imgDataUrl}" alt="${post.title} 이미지" style="max-width: 100%; height:auto;">` : ''}
+            <button type="button" class="btn btn-secondary" onclick="showPostList();">목록으로</button>
+        `;
+        postView.innerHTML = postDetailHTML;
+        postList.style.display = "none";
+        postWriteForm.style.display = "none";
+        postView.style.display = "block";
+    }
+
+    showPostList();
+</script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>커뮤니티 게시판</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+        margin: 20px;
+    }
+.nav-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px solid #CCCCCC;
+    background-color: #f8f9fa;
+    padding: 10px 0;
+}
+
+.menu {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  gap: 20px;
+}
+
+.menu-item {
+  cursor: pointer;
+}
+
+.container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: calc(100vh - 160px);
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+
+.right {
+  width: 100%;
+  max-width: 800px;
+}
+
+.post-write, .post-view {
+  display: none;
+}
+
+.post-list-item {
+  border: 1px solid #cccccc;
+  margin-bottom: 10px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+  </style>
+</head>
+<body>
+  <div class="nav-container">
+    <div class="menu">
+      <div class="menu-item">공지사항</div>
+      <div class="menu-item">잡담</div>
+      <div class="menu-item">10추글</div>
+      <div class="menu-item">30추글</div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="controls">
+      <button class="write-btn">글쓰기</button>
+      <input type="text" name="search" placeholder="검색어 입력">
+      <button class="search">검색</button>
+    </div>
+    <div class="right">
+      <div class="post-list">
+        <!-- 여기에 게시물 목록이 표시됩니다 -->
+      </div>
+      <form class="post-write">
+        <div class="form-group">
+          <label for="post-title">제목</label>
+          <input type="text" class="form-control" id="post-title">
+        </div>
+        <div class="form-group">
+          <label for="post-content">내용</label>
+          <textarea class="form-control" id="post-content" rows="6"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">작성완료</button>
+        <button type="button" class="btn btn-secondary" onclick="cancelPost();">취소</button>
+      </form>
+      <div class="post-view">
+        <!-- 여기에 게시물 세부 정보가 표시됩니다 -->
+      </div>
+    </div>
+  </div>
+<script>
+const writeBtn = document.querySelector(".write-btn");
+const searchBtn = document.querySelector(".search");
+const postList = document.querySelector(".post-list");
+const postWriteForm = document.querySelector(".post-write");
+const postView = document.querySelector(".post-view");
+
+const savedPosts = [];
+
+function showPostList() {
+  postList.style.display = "block";
+  postWriteForm.style.display = "none";
+  postView.style.display = "none";
+  renderPosts();
+}
+
+function showPostWriteForm() {
+  postList.style.display = "none";
+  postWriteForm.style.display = "block";
+  postView.style.display = "none";
+}
+
+function showPostDetail(post) {
+  postView.innerHTML = `
+    <h5>${post.title}</h5>
+    <p>${post.content}</p>
+    <button type="button" class="btn btn-secondary" onclick="showPostList();">목록으로</button>
+  `;
+  postList.style.display = "none";
+  postWriteForm.style.display = "none";
+  postView.style.display = "block";
+}
+
+function cancelPost() {
+  resetForm();
+  showPostList();
+}
+
+function resetForm() {
+  document.getElementById("post-title").value = "";
+  document.getElementById("post-content").value = "";
+}
+
+function savePost() {
+  const title = document.getElementById("post-title").value;
+  const content = document.getElementById("post-content").value;
+
+  savedPosts.push({ title, content });
+  resetForm();
+  showPostList();
+}
+
+function renderPosts() {
+  postList.innerHTML = "";
+  savedPosts.forEach((post, index) => {
+    const postListItem = document.createElement("div");
+    postListItem.classList.add("post-list-item");
+    postListItem.innerHTML = `
+      <h5>${post.title}</h5>
+      <p>${post.content}</p>
+    `;
+    postListItem.addEventListener("click", () => showPostDetail(post));
+    postList.appendChild(postListItem);
+  });
+}
+
+writeBtn.addEventListener("click", showPostWriteForm);
+
+postWriteForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  savePost();
+});
+</script>
+</body>
+</html>

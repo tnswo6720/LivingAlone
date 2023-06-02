@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>해시태그 입력</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 10px;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .container div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #f2f2f2;
+      border-radius: 5px;
+      height: 100px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      position: relative;
+    }
+
+    .container div.active {
+      background-color: #2196F3;
+      color: #fff;
+    }
+
+    input[type="checkbox"] {
+      display: none;
+    }
+
+    input[type="checkbox"] + label:before {
+      content: "";
+      display: inline-block;
+      vertical-align: middle;
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      background-color: #fff;
+      cursor: pointer;
+    }
+
+    input[type="checkbox"]:checked + label:before {
+      content: '\2713';
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      text-align: center;
+      line-height: 20px;
+      color: #fff;
+      background-color: #2196F3;
+    }
+
+    input[type="checkbox"] + label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    input[type="checkbox"] + label:active:before {
+      background-color: #ccc;
+    }
+    button[type="submit"] {
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%);
+      padding: 10px 20px;
+      font-size: 1.2em;
+      background-color: #2196F3;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #0D47A1;
+    }
+  </style>
+</head>
+<body>
+<form action="/member/survey" id="hashtag-form" method="post">
+  <div style="text-align: center;">
+    <p>[[${session.loginEmail}]]님 선호되는 태그를 골라주세요.</p>
+  </div>
+  <div class="container">
+    <div class="tag">
+      <input type="checkbox" name="selectedTags[]" value="#bts여행"> #bts여행
+    </div>
+    <div class="tag">
+      <input type="checkbox" name="selectedTags[]" value="#bts투어"> #bts투어
+    </div>
+    <div class="tag">
+      <input type="checkbox" name="selectedTags[]" value="#가족여행"> #가족여행
+    </div>
+    <div class="tag">
+      <input type="checkbox" name="selectedTags[]" value="#국립중앙박물관"> #국립중앙박물관
+    </div>
+    <div class="tag">
+      <input type="checkbox" name="selectedTags[]" value="#문화시설"> #문화시설
+    </div>
+    <div class="tag">
+      <input type="checkbox" name="selectedTags[]" value="#미세먼지_피하는_실내여행"> #미세먼지_피하는_실내여행
+    </div>
+    <div class="tag">
+      <input type="checkbox" name="selectedTags[]" value="#박물관"> #박물관
+    </div>
+    <div class="tag">
+      <input type="checkbox" name="selectedTags[]" value="#수도권"> #수도권
+    </div>
+    <div class="tag">
+      <input type="checkbox" name="selectedTags[]" value="#실내관광지"> #실내관광지
+    </div>
+    <div class="tag">
+      <input type="checkbox" name="selectedTags[]" value="#실내여행"> #실내여행
+    </div>
+    <div class="tag">
+      <input type="checkbox" name="selectedTags[]" value="#실내여행지"> #실내여행지
+    </div>
+    <div class="tag">
+      <input type="checkbox" name="selectedTags[]" value="#아이와함께"> #아이와함께
+    </div>
+    <input type="hidden" name="email" th:value="${session.loginEmail}">
+  </div>
+
+  <button type="submit">확인</button>
+</form>
+<script>
+  const container = document.querySelector('.container');
+  const items = document.querySelectorAll('.container .tag');
+
+  function shuffle(array) {
+    let currentIndex = array.length;
+    let temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+  }
+
+  items.forEach(item => {
+    item.addEventListener('click', (event) => {
+      event.target.classList.toggle('active');
+    })
+  });
+
+  shuffle(Array.from(items)).forEach(item => {
+    container.appendChild(item);
+  });
+
+  const form = document.querySelector('#hashtag-form');
+  const selectedTagsInput = document.querySelector('#selectedTags');
+  const tags = document.querySelectorAll('.tag input');
+
+  form.addEventListener('submit', (event) => {
+    const selectedTags = Array.from(tags)
+            .filter(tag => tag.checked)
+            .map(tag => tag.value);
+    selectedTagsInput.value = selectedTags.join(',');
+  });
+
+</script>
+</body>
+</html>

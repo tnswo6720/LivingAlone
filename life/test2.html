@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>생활 게시판</title>
+  <style>
+    /* 스타일 코드 */
+    /* 생활 게시판 및 지도 위치 관련 스타일 설정 */
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .board {
+      width: 30%;
+      height: 200px;
+      margin-left: 1rem;
+    }
+    /* 지도의 현재 스타일 설정 */
+    #map {
+  width: 300px;
+  height: 300px;
+  margin-right: 1rem;
+  border-radius: 20px;
+}
+/* 안내 멘트의 위치 설정 */
+.current-location {
+  width: 100%;
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+
+    /* 지도와 안내 멘트를 감싸준다 */
+    #map-wrapper {
+      position: relative;
+      text-align: center;
+      
+    }
+  </style>
+  <!-- 카카오 지도 API 스크립트 추가 -->
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=32cd3d55a131b8db3a46c1d1790fb3db"></script>
+</head>
+<body>
+  <div class="container">
+    <div id="map-wrapper">
+      <div id="map"></div>
+      <p class="current-location">이용자 현재 위치</p> <!-- 현재 위치 안내 멘트 추가 -->
+    </div>
+    <div class="board">
+      <!-- 여기에 생활 게시판 요소 추가 -->
+    </div>
+  </div>
+  <script>
+    // 카카오 지도 API를 사용한 지도 생성 및 위치 설정
+    var mapContainer = document.getElementById('map'),
+      mapOption = {
+        center: new kakao.maps.LatLng(37.56682, 126.97865),
+        level: 3
+      };
+    var map = new kakao.maps.Map(mapContainer, mapOption);
+
+    // 사용자 정보 및 특정 위치 추천 기능 구현
+    var userPrefs = {
+      'user1': {
+        lat: 37.56682,
+        lng: 126.97865
+      },
+      // 여기에 사용자 위치 정보 추가
+    };
+
+    // 카카오 지도 API를 사용하여 사용자 위치를 표시하는 함수
+    function showUserLocation(userId) {
+      var userLocation = new kakao.maps.LatLng(userPrefs[userId].lat, userPrefs[userId].lng);
+      map.setCenter(userLocation);
+    }
+
+    // 예시: user1의 위치를 지도에 표시
+    showUserLocation('user1');
+  </script>
+</body>
+</html>

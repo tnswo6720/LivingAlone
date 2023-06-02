@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학교 괴담 게임</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #333;
+        }
+
+        .main-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            padding: 50px;
+            max-width: 800px;
+            width: 90%;
+        }
+
+        .narrative {
+            font-size: 18px;
+            text-align: justify;
+        }
+
+        .choice {
+            display: block;
+            background-color: #ccc;
+            border: 1px solid #999;
+            border-radius: 5px;
+            color: #333;
+            font-size: 16px;
+            padding: 10px;
+            text-align: center;
+            margin-bottom: 10px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .choice:hover {
+            background-color: #aaa;
+        }
+
+        .ghost-container {
+            text-align: center;
+            margin-top: 10px; /* 이미지와 선택 버튼 사이의 여백 조정 */
+            display: flex;
+            justify-content: center;
+        }
+        .scary-image {
+            max-width: 50%; /* 이미지 크기 조절 */
+            display: none;
+            height: auto;
+        }
+        .intro {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 1.2em;
+            line-height: 1.5;
+        }
+        .start-button {
+            display: inline-block;
+            border: 1px solid #333;
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #fff;
+            text-decoration: none;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="intro" id="intro">
+            당신의 친한 친구가 밤에 학교 주변을 산책할 때 여자 화장실에서 기괴한 소리를 들었다고 말합니다.
+            친구들은 소문을 대수롭게 생각하나 오컬트 마니아인 당신은 흥미를 가지고 학교 어딘가에 숨어있다가 학교에 아무도 없을 때
+            교실에서 공부를 하며 친구가 말하던 괴기 현상을 기다려보기로 합니다.
+            <br/><br/>
+            <a href="#" class="start-button" onclick="startGame()">게임 시작</a>
+        </div>
+        <div class="narrative" id="narrative">dd</div>
+        <a href="#" class="choice" id="optionA" onclick="makeDecision('A')">dd</a>
+        <a href="#" class="choice" id="optionB" onclick="makeDecision('B')">dd</a>
+        <div class="ghost-container">
+            <img src="./image/womanghost.png" id="ghostImage" alt="Scary Ghost" class="scary-image">
+        </div>
+    </div>
+    <script>
+        const narrative = document.getElementById('narrative');
+        const optionA = document.getElementById('optionA');
+        const optionB = document.getElementById('optionB');
+        const ghostImage = document.getElementById('ghostImage');
+
+        let currentStep = 0;
+
+        const script = [
+            {
+                narrative: '학교에 도착했습니다. 어디로 갈까요?',
+                optionA: { text: '교실에서 공부 중입니다', nextStep: 1 },
+                optionB: { text: '무서운 여자 화장실로 가기', nextStep: 2 },
+            },
+            {
+                narrative: '여자 화장실에서 이상한 소리가 들립니다. 어떻게 할까요?',
+                optionA: { text: '소리가 들리는 여자 화장실로 가기', nextStep: 2 },
+                optionB: { text: '무서워서 교실에 남기', nextStep: 3 },
+            },
+            {
+    narrative: '무서운 여자 화장실에 들어서자 불길한 느낌이 듭니다. 화장실 구석에서 슬픈 모습의 귀신이 나타났습니다.',
+    optionA: { text: '귀신의 사연을 들어주기', nextStep: 4 },
+    optionB: { text: '무서워서 교실로 돌아가기', nextStep: 3 },
+},
+
+
+            {
+                narrative: '무서운 소리는 서늘한 인기척으로 다가오며, 당신은 악령에게 빙의당합니다. 배드 엔딩입니다.',
+                optionA: { text: '게임 재시작', nextStep: 0 },
+                optionB: { text: '게임 종료', nextStep: -1 },
+            },
+            {
+                narrative: '" 나는 구교사의 교실에서 혼자 공부를 하다가 건물 붕괴사고를 겪었어. 그곳에서 나는 외롭고 두려운 마음으로 도움을 기다렸지만, 나를 찾아주는 사람이 방학 때라 없었어. 이 건물의 터가 과거 구교사야"',
+                imageUrl: './image/girl.png', 
+                optionA: { text: '귀신의 아픔을 이해하며 달래주기', nextStep: 5 },
+                optionB: { text: '귀신에게 별다른 관심을 가지지 않기', nextStep: 6 },
+            },
+            {
+                narrative: '공감을 표현한 결과, 귀신이 좀 더 마음이 편안해졌습니다. 결국 귀신은 당신과의 이야기 끝에 영면할 수 있었습니다. 해피 엔딩입니다.',
+                optionA: { text: '게임 재시작', nextStep: 0 },
+                optionB: { text: '게임 종료', nextStep: -1 },
+            },
+            {
+                narrative: '귀신이 화가 낫습니다. ".. 나를 무시하다니.." 이 말과 동시에, 귀신이 당신을 죽였습니다. 게임 오버입니다.',
+                optionA: { text: '게임 재시작', nextStep: 0 },
+                optionB: { text: '게임 종료', nextStep: -1 },
+            },
+        ];
+
+        function updateStory() {
+            if (currentStep === -1) {
+                window.location.reload();
+            } else {
+                narrative.textContent = script[currentStep].narrative;
+                optionA.textContent = script[currentStep].optionA.text;
+                optionB.textContent = script[currentStep].optionB.text;
+            }
+        }
+
+        function makeDecision(decision) {
+            currentStep = script[currentStep][`option${decision}`].nextStep;
+            updateStory();
+        }
+
+        
+function updateStory() {
+    if (currentStep === -1) {
+        window.location.reload();
+    } else {
+        narrative.textContent = script[currentStep].narrative;
+        optionA.textContent = script[currentStep].optionA.text;
+        optionB.textContent = script[currentStep].optionB.text;
+        if (currentStep === 2) {
+            ghostImage.style.display = 'block';
+        } else {
+            ghostImage.style.display = 'none';
+        
+        }
+
+         // 이 새로운 코드 부분 추가하세요:
+         if (script[currentStep].imageUrl) {
+            const imageElement = document.createElement('img');
+            imageElement.src = script[currentStep].imageUrl;
+            imageElement.alt = '오래된 학교 건물';
+            imageElement.style.width = '300px'; // 필요한 경우 이미지 크기를 조절하세요.
+            narrative.appendChild(imageElement);
+        }
+    }
+}
+
+
+        // Init
+        updateStory();
+
+        const introDiv = document.getElementById('intro');
+        const narrativeDiv = document.getElementById('narrative');
+        
+        function startGame() {
+    introDiv.style.display = 'none';
+    narrativeDiv.style.display = 'block';
+    optionA.style.display = 'block';
+    optionB.style.display = 'block';
+    updateStory();
+}
+
+
+        // Init
+        narrativeDiv.style.display = 'none';
+        document.getElementById('optionA').style.display = 'none';
+        document.getElementById('optionB').style.display = 'none';
+    </script>
+</body>
+</html>

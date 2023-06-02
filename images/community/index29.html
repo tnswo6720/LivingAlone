@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>커뮤니티 게시판</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4">커뮤니티 게시판</h1>
+        <div>
+            <button onclick="showPostWrite();" class="btn btn-primary mb-4">글 작성하기</button>
+            <button onclick="showTopPosts();" class="btn btn-info mb-4">5추글 보기</button>
+            <button onclick="showPostList();" class="btn btn-secondary mb-4">전체 목록</button>
+            <ul id="post-list" class="post-list list-group"></ul>
+            <ul id="top-posts-list" class="post-list list-group hidden"></ul>
+            <form id="post-write-form" class="post-write hidden" onsubmit="return false;">
+                <div class="form-group">
+                    <label for="post-title">제목</label>
+                    <input type="text" class="form-control" id="post-title" placeholder="제목을 입력하세요">
+                </div>
+                <div class="form-group">
+                    <label for="post-content">내용</label>
+                    <textarea class="form-control" id="post-content" rows="5" placeholder="내용을 입력하세요"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="post-image">이미지 첨부</label>
+                    <input type="file" class="form-control-file" id="post-image" accept="image/*">
+                </div>
+                <button onclick="savePost();" class="btn btn-primary">작성완료</button>
+                <button onclick="cancelPost();" type="button" class="btn btn-secondary">취소</button>
+            </form>
+            <div id="post-view" class="post-view hidden"></div>
+        </div>
+    </div>
+    <script>
+        function showPostWrite() {
+            document.getElementById('post-list').classList.add('hidden');
+            document.getElementById('top-posts-list').classList.add('hidden');
+            document.getElementById('post-view').classList.add('hidden');
+            document.getElementById('post-write-form').classList.remove('hidden');
+        }
+
+        function showPostList() {
+            document.getElementById('top-posts-list').classList.add('hidden');
+            document.getElementById('post-view').classList.add('hidden');
+            document.getElementById('post-write-form').classList.add('hidden');
+            document.getElementById('post-list').classList.remove('hidden');
+            renderPostList();
+        }
+
+        function showTopPosts() {
+            document.getElementById('post-list').classList.add('hidden');
+            document.getElementById('post-view').classList.add('hidden');
+            document.getElementById('post-write-form').classList.add('hidden');
+            document.getElementById('top-posts-list').classList.remove('hidden');
+            renderTopPostsList();
+        }
+
+        function resetForm() {
+            document.getElementById('post-title').value = '';
+            document.getElementById('post-content').value = '';
+            document.getElementById('post-image').value = '';
+            postListElem.innerHTML = ''; // 목록을 초기화하고 다시 불러오기 위해 추가
+            topPostsListElem.innerHTML = ''; // 목록을 초기화하고 다시 불러오기 위해 추가
+        }
+
+        function savePost() {
+            var title = document.getElementById('post-title').value;
+            var content = document.getElementById('post-content').value;
+            var image = document.getElementById('post-image').value;
+            savedPosts.push({
+                title: title,
+                content: content,
+                image: image,
+                upVotes: 0,
+                downVotes: 0,
+            });
+            resetForm();
+            showPostList();
+        }
+
+        function cancelPost() {
+            resetForm();
+            showPostList();
+        }
+
+        function showPostDetail(index) {
+            var post = savedPosts[index];
+            var postViewElem = document.getElementById('post-view');
+            postViewElem.innerHTML = `
+                <h2>${post.title}</h2>
+                <p>${post.content}</p>
+                ${post.image ? '<img src="' + post.image + '" alt="이미지" />' : ''}
+                <div>
+                    <button onclick="upVote(${index});">Up Vote</button>
+                    <button onclick="downVote(${index});">Down Vote</button>
+                </div>
+                <div>Up votes: ${post.upVotes}</div>
+                <div>Down votes: ${post.downVotes}</div>
+                <button onclick="cancelPost();" type="button" class="btn btn-secondary mt-4">뒤로 가기</button>`;
+            postViewElem.classList.remove('hidden');
+            document.getElementById('post-list').classList.add('hidden');
+            document.getElementById('top-posts-list').classList.add('hidden');
+            document.getElementById('post-write-form').classList.add('hidden');
+        }
+
+        function upVote(index) {
+            savedPosts[index].upVotes += 1;
+            showPostDetail(index);
+        }
+
+        function downVote(index) {
+            savedPosts[index].downVotes += 1;
+            showPostDetail(index);
+        }
+
+        var savedPosts = [];
+        var postListElem = document.getElementById('post-list');
+        var topPostsListElem = document.getElementById('top-posts-list');
+
+        function renderPostList() {
+            resetForm(); // 목록을 초기화하고 다시 불러오기 위해 추가
+            savedPosts.forEach((post, index) => {
+                postListElem.innerHTML += `
+                    <li class="list-group-item" onclick="showPostDetail(${index})">
+                        <span>${post.title}</span>
+                    </li>`;
+            });
+        }
+
+        function renderTopPostsList() {
+            resetForm(); // 목록을 초기화하고 다시 불러오기 위해 추가
+            savedPosts.forEach((post, index) => {
+                if (post.upVotes >= 5) {
+                    topPostsListElem.innerHTML += `
+                    <li class="list-group-item" onclick="showPostDetail(${index})">
+                        <span>${post.title}</span>
+                    </li>`;
+                }
+            });
+        }
+    </script>
+</body>
+</html>

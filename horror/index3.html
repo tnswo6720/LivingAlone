@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>학교 괴담 게임</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #333;
+    }
+
+    .main-container {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      padding: 50px;
+      max-width: 800px;
+      width: 90%;
+    }
+
+    .background {
+      position: relative;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      padding: 20px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .narrative {
+      font-size: 18px;
+      text-align: justify;
+    }
+
+    .choice {
+      display: block;
+      background-color: #ccc;
+      border: 1px solid #999;
+      border-radius: 5px;
+      color: #333;
+      font-size: 16px;
+      padding: 10px;
+      text-align: center;
+      margin-bottom: 10px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .choice:hover {
+      background-color: #aaa;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main-container">
+    <div id="background" class="background">
+      <div class="narrative" id="narrative">
+        게임을 시작합니다. 선택지를 클릭해 주세요.
+      </div>
+      <button class="choice" id="optionA" onclick="makeDecision('A')">선택지 A</button>
+      <button class="choice" id="optionB" onclick="makeDecision('B')">선택지 B</button>
+    </div>
+  </div>
+  <script>
+    const narrative = document.getElementById('narrative');
+    const optionA = document.getElementById('optionA');
+    const optionB = document.getElementById('optionB');
+    const background = document.getElementById('background');
+    let currentStep = 0;
+
+    const script = [
+      {
+        narrative: '학교에 도착했습니다. 무엇부터 할까요?',
+        optionA: { text: '교실로 이동하기', nextStep: 1 },
+        optionB: { text: '도서관으로 이동하기', nextStep: 2 },
+      },
+      {
+        narrative: '교실에 도착했습니다. 갑자기 무서운 소리가 들립니다. 어떻게 할까요?',
+        optionA: { text: '소리가 들리는 방향으로 가기', nextStep: 3 },
+        optionB: { text: '그냥 원래 자리에 있기', nextStep: 4 },
+      },
+      {
+        narrative: '도서관에 도착했습니다. 오래된 책을 발견했습니다. 책을 보고 있으면 도어가 음소거진다. 어떻게 할까요?',
+        optionA: { text: '대수롭지 않게 생각하고 계속 독서하기', nextStep: 5 },
+        optionB: { text: '두려워서 도서관을 빠져나가기', nextStep: 6 },
+      },
+      // (기타 대화 및 결말 추가...)
+    ];
+
+    function updateStory() {
+      narrative.textContent = script[currentStep].narrative;
+      optionA.textContent = script[currentStep].optionA.text;
+      optionB.textContent = script[currentStep].optionB.text;
+    }
+
+    function makeDecision(decision) {
+      const nextStep = script[currentStep]['option' + decision].nextStep;
+      currentStep = nextStep;
+      updateStory();
+    }
+  </script>
+</body>
+
+</html>

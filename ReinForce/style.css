@@ -1,0 +1,32 @@
+h1 {
+    text-align: center;
+  }
+  
+  p {
+    text-align: center;
+  }
+  
+  #enhancement-level {
+    font-weight: bold;
+  }
+  
+  #enhance-button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+  }
+  
+  #enhance-button:hover {
+    background-color: #ddd;
+  }
+  
+  #enhance-button:active {
+    background-color: #bbb;
+    border-color: #333;
+  }
+  

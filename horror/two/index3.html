@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Star Collector</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const mainScene = {
+      preload: function() {
+        this.load.image('sky', 'https://google.com');
+        this.load.image('star', 'https://phasertutorials.com/assets/2020/05/star-collector/star.png');
+      },
+      create: function() {
+        this.add.image(400, 300, 'sky');
+        this.star = this.add.sprite(400, 300, 'star');
+        this.star.setScale(0.5);
+
+        // 점수 초기화 및 화면에 표시
+        this.score = 0;
+        this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#ffffff' });
+
+        // 별을 클릭하여 점수 올리기
+        this.star.setInteractive();
+        this.star.on('pointerdown', () => this.collectStar());
+      },
+      update: function() {
+      },
+      collectStar: function() {
+        // 점수 증가
+        this.score += 1;
+        this.scoreText.setText('Score: ' + this.score);
+
+        // 별의 위치를 무작위로 변경
+        const x = Phaser.Math.Between(0, this.sys.canvas.width);
+        const y = Phaser.Math.Between(0, this.sys.canvas.height);
+        this.star.x = x;
+        this.star.y = y;
+      }
+    };
+
+    const config = {
+      type: Phaser.AUTO,
+      width: 800,
+      height: 600,
+      scene: mainScene
+    };
+
+    const game = new Phaser.Game(config);
+  </script>
+</body>
+</html>

@@ -1,0 +1,418 @@
+
+
+h1 {
+    color: #FFC0CB;
+    text-shadow: 2px 2px 4px #FF1493;
+    font-size: 35px; /* 예시 값, 필요에 따라 조절해주세요 */
+  }
+  
+  body {
+      background-color: white;
+      background-image: url('images/bg.jpg');
+      background-size: cover;
+  }
+  
+  
+  
+  
+  .copy {
+      text-align: center;
+      text-transform: capitalize;
+  }
+  
+  
+  .menu {
+    display: none;
+    float: left;
+    height: 0.5px;
+    background-color: #f9d6e8;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px;
+    position: absolute;
+    font-weight:300;
+  }
+  
+  
+  .menu__toggle {
+    
+    display: none;
+    align-items: center;
+  }
+  
+  .menu__toggle-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    height: 150px;
+    position: relative;
+    width: 50px;
+  }
+  
+  .menu__toggle-icon,
+  .menu__toggle-icon::before,
+  .menu__toggle-icon::after {
+    background-color:#fff;
+    content: "";
+    display: block;
+    height: 3px;
+    position: absolute;
+    width: 100%;
+  }
+  
+  .menu__toggle-icon::before {
+    top: -6px;
+  }
+  
+  .menu__toggle-icon::after {
+    bottom: -6px;
+  }
+  
+  .menu__items {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #f9d6e8;
+    padding: 10px;
+    z-index: 1;
+       
+  }
+  
+  .menu__items.is-active {
+    display: flex;
+  }
+  
+  .menu__item {
+    color: snow;
+    margin-bottom: 10px;
+    text-decoration: none; 
+    display: block;
+    white-space: nowrap;
+    font-weight: bold;    
+  }
+  
+  
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  
+  .button {
+    position: relative; /* 추가 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin-right: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .button:hover img {
+    transform: scale(1.1);
+  }
+  
+  .button__img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+  }
+  
+  /*
+  .button__text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color : pink;
+    
+  }
+  */
+  
+  .button__text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: pink;
+    text-shadow: 1px 1px 1px black;
+    font-weight: bold;
+  }
+  
+  .button:hover .button__text {
+    opacity: 1;
+  }
+  
+  .tooltip {
+    display: none;
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 10px;
+    background-color: #fff;
+    color: #FFC0CB;
+    font-size: 12px;
+    border-radius: 5px;
+  }
+  
+  .tooltip::after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 10px;
+    height: 10px;
+    background-color: pink;
+    border-radius: 5px;
+  }
+  
+  .tooltip.is-active {
+    display: block;
+  }
+  
+  .board {
+    background-color: #f9d6e8;
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 10px;
+      
+    
+  }
+  
+  .board a {
+    color: white;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  hr {
+      margin-bottom: 20px;
+  }
+  
+  hr, .copy {
+    
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+  }
+  
+  .copy {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  /* 검색어 CSS */
+  .search {
+    position: absolute;
+    top: 50px; /* nav.menu의 높이만큼 여백 추가 */
+    right: 0;
+  }
+  
+  .search__pink {
+    background-color: #f9d6e8;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 16px;
+    color: white;
+  }
+  
+  .gif-wrapper {
+    margin-top: 70px;
+    position: relative;
+    height: 80px;
+    margin-bottom: 5px;
+  }
+  
+  .gif-wrapper1 {
+    margin-top: 70px;
+    position: relative;
+    height: 80px;
+    margin-bottom: 5px;
+        
+  }
+  
+  
+  
+  /*
+  .chat-window {
+      
+          
+    width: 250px;
+    bottom: 300px;
+    display: flex;
+    flex-direction: column;     
+    height: 250px;
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px #CCC;
+    overflow: hidden;
+    position: absolute;
+    
+    
+    
+  }
+  */
+  
+  .chat-window {
+    position: absolute;
+    top: 180px;
+    right: 10px;
+    width: 250px;
+    height: 250px;
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    border-radius: 300px 300px 300px 0;
+    box-shadow: 2px 2px 5px #CCC;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column; 
+  }
+  
+  
+  
+  
+  
+  .chat-header {
+    background-color: #FFC0CB;
+    color: #FFF;
+    font-size: 16px;
+    font-weight: bold;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 10px;
+  }
+  
+  .chat-body {
+    height: 390px;
+    padding: 10px;
+    overflow-y: scroll;
+  }
+  
+  .message {
+    max-width: 70%;
+    margin-bottom: 10px;
+    clear: both;
+    overflow: hidden;
+  }
+  
+  .message.sent {
+    float: right;
+    background-color: #FFF;
+    color: #333;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 2px 2px 5px #CCC;
+  }
+  
+  .message.received {
+    float: left;
+    background-color: #F9D6E8;
+    color: #333;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 2px 2px 5px #CCC;
+  }
+  
+  .textarea-container {
+    background-color: #FFF;
+    border-top: 1px solid #CCC;
+    padding: 10px;
+  }
+  
+  .textarea-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    padding: 5px;
+  }
+  
+  .textarea {
+    flex: 1;
+    border: none;
+    outline: none;
+    resize: none;
+  }
+  
+  .btn-send {
+    background-color: white;
+    color: #FFC0CB;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+
+  /* 로그인과 회원가입 */
+  .authentication-buttons {
+    position: absolute;
+    top: 10px; /* 위치 조정 */
+    right: 0;
+  }
+  
+  .login-button, .signup-button {
+    display: inline-block;
+    color: white;
+    background-color: #f9d6e8;
+    padding: 10px;
+    border: none;
+    text-decoration: none;
+    border-radius: 20px;
+    
+  }
+  
+  /* 모달 스타일 */
+
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+  
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }

@@ -1,0 +1,285 @@
+
+
+h1 {
+  color: #FFC0CB;
+  text-shadow: 2px 2px 4px #FF1493;
+  font-size: 35px; /* 예시 값, 필요에 따라 조절해주세요 */
+}
+
+body {
+    background-color: white;
+    background-image: url('images/bg.jpg');
+    background-size: cover;
+}
+
+
+
+
+.copy {
+    text-align: center;
+    text-transform: capitalize;
+}
+
+
+.menu {
+  height: 0.5px;
+  background-color: #f9d6e8;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0.5px;
+  position: relative;
+}
+
+
+.menu__toggle {
+  display: flex;
+  align-items: center;
+}
+
+.menu__toggle-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  height: 50px;
+  position: relative;
+  width: 50px;
+}
+
+.menu__toggle-icon,
+.menu__toggle-icon::before,
+.menu__toggle-icon::after {
+  background-color: #FF1493;
+  content: "";
+  display: block;
+  height: 2px;
+  position: absolute;
+  width: 100%;
+}
+
+.menu__toggle-icon::before {
+  top: -6px;
+}
+
+.menu__toggle-icon::after {
+  bottom: -6px;
+}
+
+.menu__items {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #f9d6e8;
+  padding: 10px;
+  z-index: 1;
+}
+
+.menu__items.is-active {
+  display: flex;
+}
+
+.menu__item {
+  color: #2e2e2e;
+  margin-bottom: 10px;
+}
+
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  position: relative; /* 추가 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  margin-right: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.button:hover img {
+  transform: scale(1.1);
+}
+
+.button__img {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+/*
+.button__text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color : pink;
+  
+}
+*/
+
+.button__text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: pink;
+  text-shadow: 1px 1px 1px black;
+  font-weight: bold;
+}
+
+.button:hover .button__text {
+  opacity: 1;
+}
+
+.board {
+  background-color: #f9d6e8;
+  padding: 10px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.board a {
+  color: white;
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+hr {
+    margin-bottom: 20px;
+}
+
+hr, .copy {
+  
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+}
+
+.copy {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+}
+
+
+.search {
+  position: absolute;
+  top: 50px; /* nav.menu의 높이만큼 여백 추가 */
+  right: 0;
+}
+
+.search__pink {
+  background-color: #f9d6e8;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 16px;
+  color: white;
+}
+
+.gif-wrapper {
+  margin-top: 70px;
+  position: relative;
+  height: 80px;
+  margin-bottom: 5px;
+}
+
+.gif-wrapper1 {
+  margin-top: 70px;
+  position: relative;
+  height: 80px;
+  margin-bottom: 5px;
+      
+}
+
+.chat-window {
+  position: absolute;
+  bottom: 300px; /* 원하는 위치로 조정해주세요 */
+  right: 20px; /* 오른쪽 상단에 위치하는 것을 유지합니다 */
+  display: flex;
+  flex-direction: column;
+  height: 250px;
+  width: 250px;
+  border: 1px solid #ccc;
+}
+
+.chat-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-y: scroll
+  padding: 10px;
+}
+
+
+
+
+.chat-header {
+  background-color: #f2f2f2;
+  padding: 10px;
+  font-weight: bold;
+  text-align: center;
+}
+
+
+
+.message {
+  margin-bottom: 10px;
+}
+
+.received {
+  text-align: left;
+}
+
+.sent {
+  text-align: right;
+}
+
+.chat-footer {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+}
+
+.textarea-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.textarea-wrapper {
+  flex: 1;
+  display: flex;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.textarea {
+  flex: 1;
+  border: none;
+  outline: none;
+  resize: none;
+  font-size: 14px;
+  line-height: 1.5;
+}
